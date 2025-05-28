@@ -49,14 +49,14 @@ export default {
       isIOS: false
     };
   },
-  async created() {
-    try {
-      const response = await axios.get('http://localhost:3000/api/categories');
-      console.log('Categories received from API:', response.data);
-      this.categories = response.data.filter(category => category.name !== 'lisez - moi');
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
+ async created() {
+  try {
+    const response = await axios.get('/api/categories'); // Doit être relatif
+    console.log('Categories received from API:', response.data);
+    this.categories = response.data.filter(category => category.name !== 'lisez - moi');
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
 
     // Detect iOS
     const userAgent = window.navigator.userAgent;

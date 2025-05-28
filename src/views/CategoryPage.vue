@@ -55,17 +55,17 @@ export default {
     }
   },
   async created() {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/recordings/${this.category}`);
-      this.recordings = response.data.recordings;
-      this.categoryDescription = response.data.categoryDescription;
+  try {
+    const response = await axios.get(`/api/recordings/${this.category}`); // Doit être relatif
+    this.recordings = response.data.recordings;
+    this.categoryDescription = response.data.categoryDescription;
 
-      const cache = await caches.open('audio-cache');
-      const keys = await cache.keys();
-      this.downloadedFiles = keys.map(key => key.url);
-    } catch (error) {
-      console.error('Error fetching recordings:', error);
-    }
+    const cache = await caches.open('audio-cache');
+    const keys = await cache.keys();
+    this.downloadedFiles = keys.map(key => key.url);
+  } catch (error) {
+    console.error('Error fetching recordings:', error);
+  }
   },
   methods: {
     async downloadMeditation(src) {
