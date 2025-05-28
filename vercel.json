@@ -1,5 +1,9 @@
 {
-  "version": 2,
+  "build": {
+    "env": {
+      "DATABASE_PATH": "backend/meditations.db"
+    }
+  },
   "builds": [
     {
       "src": "backend/server.js",

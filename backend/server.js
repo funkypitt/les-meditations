@@ -3,11 +3,11 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const app = express();
 
-// Enable CORS and the queen
+// Enable CORS
 app.use(cors());
 
 // Connect to the SQLite database
-const db = new sqlite3.Database('./meditations.db', (err) => {
+const db = new sqlite3.Database(process.env.DATABASE_PATH || './meditations.db', (err) => {
   if (err) {
     console.error('Error connecting to database:', err);
     process.exit(1);
