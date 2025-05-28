@@ -7,9 +7,26 @@ const fs = require('fs');
 
 const app = express();
 
-// Enable CORS
+// Liste des origines autorisées
+const allowedOrigins = [
+  'https://app.enpleineconscience.ch', // Domaine personnalisé (production)
+  'https://les-meditations.vercel.app', // URL de production Vercel
+  'https://les-meditations-99wkm84gr-pierre-gallazs-projects.vercel.app', // URL de prévisualisation Vercel
+  'http://localhost:5173' // Pour le développement local
+];
+
+// Enable CORS avec une configuration dynamique
 app.use(cors({
-  origin: 'https://app.enpleineconscience.ch' // Remplacez par votre domaine
+  origin: (origin, callback) => {
+    // Autorise les requêtes sans origine (par exemple, Postman ou curl)
+    if (!origin) return callback(null, true);
+    // Vérifie si l'origine est dans la liste des origines autorisées
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
 
 // Serve static files from the frontend (dist folder)
