@@ -1,35 +1,13 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
-const path = require('path');
-
 const app = express();
 
-// Liste des origines autorisées
-const allowedOrigins = [
-  'https://app.enpleineconscience.ch',
-  'https://les-meditations.vercel.app',
-  'https://les-meditations-99wkm84gr-pierre-gallazs-projects.vercel.app',
-  'http://localhost:5173'
-];
-
-// Enable CORS
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
-
-// Serve static files from the frontend (dist folder)
-app.use(express.static(path.join(__dirname, '../dist')));
+// Enable CORS and the queen
+app.use(cors());
 
 // Connect to the SQLite database
-const db = new sqlite3.Database(path.join(__dirname, 'meditations.db'), (err) => {
+const db = new sqlite3.Database('./meditations.db', (err) => {
   if (err) {
     console.error('Error connecting to database:', err);
     process.exit(1);
@@ -86,14 +64,8 @@ app.get('/api/recordings/:category', (req, res) => {
   });
 });
 
-// Fallback to index.html for SPA routing
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
-
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-})();
