@@ -1,5 +1,10 @@
 <template>
   <div class="home">
+    <div class="offline-indicator" v-if="!isOnline">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 3L3 10L12 12L14 21L21 3Z" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <img src="/logo.png" alt="Logo" class="logo" />
     <h1>Méditations guidées d'enpleineconscience.ch</h1>
     <button v-if="showInstallButton" @click="installPWA" class="install-button">
@@ -53,10 +58,15 @@ export default {
       showInstallButton: false,
       showIOSPrompt: false,
       isIOS: false,
-      isLoadingCategories: true // Ajouté pour gérer l’état de chargement
+      isLoadingCategories: true,
+      isOnline: navigator.onLine // État initial basé sur navigator.onLine
     };
   },
   async created() {
+    // Écouter les changements de connexion
+    window.addEventListener('online', this.updateOnlineStatus);
+    window.addEventListener('offline', this.updateOnlineStatus);
+
     // Detect iOS
     const userAgent = window.navigator.userAgent;
     this.isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
@@ -74,11 +84,9 @@ export default {
       const response = await axios.get('/api/categories');
       console.log('Categories received from API:', response.data);
       this.categories = response.data.filter(category => category.name !== 'lisez - moi');
-      // Stocker les catégories dans localStorage
       localStorage.setItem('meditations-categories', JSON.stringify(response.data));
     } catch (error) {
       console.error('Error fetching categories:', error);
-      // Si localStorage contient des données, on les a déjà chargées
       if (!cachedCategories) {
         this.categories = [];
       }
@@ -106,6 +114,8 @@ export default {
   beforeDestroy() {
     window.removeEventListener('beforeinstallprompt', this.handleBeforeInstallPrompt);
     window.removeEventListener('appinstalled', this.handleAppInstalled);
+    window.removeEventListener('online', this.updateOnlineStatus);
+    window.removeEventListener('offline', this.updateOnlineStatus);
   },
   methods: {
     getCategoryColor(index) {
@@ -126,6 +136,10 @@ export default {
     },
     updateInstallButtonVisibility() {
       this.showInstallButton = !this.isIOS && !window.matchMedia('(display-mode: standalone)').matches && !!this.deferredPrompt;
+    },
+    updateOnlineStatus() {
+      this.isOnline = navigator.onLine;
+      console.log('Online status:', this.isOnline ? 'Online' : 'Offline');
     }
   }
 };
@@ -136,6 +150,13 @@ export default {
   text-align: center;
   padding: 20px;
   font-family: 'Arial', sans-serif;
+  position: relative; /* Ajouté pour positionner l’icône */
+}
+.offline-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
 }
 .logo {
   width: 112.5px;
