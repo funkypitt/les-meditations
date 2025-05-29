@@ -1,30 +1,19 @@
 <template>
   <div class="category-page">
-    <h1>Méditations guidées d'enpleineconscience.ch</h1>
-    <router-link to="/" class="back-button">Retour aux catégories</router-link>
-    <button class="clear-cache-button" @click="clearCache">Vider le cache</button>
-    <h2>{{ category }}</h2>
-    <div v-if="categoryDescription" class="category-description" v-html="categoryDescription"></div>
-    <div v-for="meditation in filteredRecordings" :key="meditation.id" class="recording">
-      <h3 v-html="meditation.name"></h3>
-      <p v-if="meditation.description">{{ meditation.description }}</p>
-      <audio controls :src="meditation.url"></audio>
-      <button
-        :class="{ 'downloaded-button': isDownloaded(meditation.url) }"
-        @click="downloadMeditation(meditation.url)"
-      >
-        <span v-if="isDownloading(meditation.url)">
-          Téléchargement... {{ downloadProgress(meditation.url) }}%
-        </span>
-        <span v-else>
-          {{ isDownloaded(meditation.url) ? 'Téléchargé' : 'Télécharger' }}
-        </span>
-      </button>
-      <p v-if="isDownloaded(meditation.url)" class="download-message">
-        Vous avez téléchargé cet enregistrement et pouvez maintenant l'écouter en mode avion.
-        <a href="#" @click.prevent="deleteSingleRecording(meditation.url)">Cliquez ici</a>
-        pour effacer la version téléchargée (ou utilisez le bouton "Vider le cache" pour effacer toutes les données téléchargées).
-      </p>
+    <h1>{{ category }}</h1>
+    <p>{{ categoryDescription }}</p>
+    <div v-if="isLoadingRecordings" class="loading">
+      Chargement des enregistrements...
+    </div>
+    <div v-else-if="recordings.length === 0" class="error">
+      Aucun enregistrement disponible. Veuillez vérifier votre connexion.
+    </div>
+    <div v-else class="recordings">
+      <div v-for="recording in recordings" :key="recording.id" class="recording">
+        <h3>{{ recording.name }}</h3>
+        <p>{{ recording.description }}</p>
+        <audio controls :src="recording.url"></audio>
+      </div>
     </div>
   </div>
 </template>
@@ -33,113 +22,53 @@
 import axios from 'axios';
 
 export default {
-  props: {
-    category: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
-      recordings: [],
+      category: this.$route.params.category,
       categoryDescription: '',
-      downloadedFiles: [],
-      downloadingFiles: new Map()
+      recordings: [],
+      isLoadingRecordings: true
     };
   },
-  computed: {
-    filteredRecordings() {
-      return this.recordings
-        .filter(rec => rec.category === this.category)
-        .sort((a, b) => a.recording_order - b.recording_order);
-    }
-  },
   async created() {
-  try {
-    const response = await axios.get(`/api/recordings/${this.category}`); // Doit être relatif
-    this.recordings = response.data.recordings;
-    this.categoryDescription = response.data.categoryDescription;
+    // Charger les enregistrements depuis localStorage (si disponibles)
+    const cachedData = localStorage.getItem('meditations-data');
+    let cachedRecordings = [];
+    let cachedCategoryDescription = '';
 
-    const cache = await caches.open('audio-cache');
-    const keys = await cache.keys();
-    this.downloadedFiles = keys.map(key => key.url);
-  } catch (error) {
-    console.error('Error fetching recordings:', error);
-  }
-  },
-  methods: {
-    async downloadMeditation(src) {
-      if (this.isDownloaded(src) || this.isDownloading(src)) return;
+    if (cachedData) {
+      const data = JSON.parse(cachedData);
+      cachedRecordings = (data.recordings || []).filter(rec => rec.category === this.category);
+      const categoryRow = (data.categories || []).find(cat => cat.name === this.category);
+      cachedCategoryDescription = categoryRow ? categoryRow.description : '';
+      this.recordings = cachedRecordings;
+      this.categoryDescription = cachedCategoryDescription;
+      this.isLoadingRecordings = false;
+    }
 
-      this.downloadingFiles.set(src, 0);
-
-      try {
-        const response = await fetch(src);
-        const reader = response.body.getReader();
-        const contentLength = +response.headers.get('Content-Length');
-        let receivedLength = 0;
-        const chunks = [];
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          chunks.push(value);
-          receivedLength += value.length;
-
-          if (contentLength) {
-            const progress = Math.round((receivedLength / contentLength) * 100);
-            this.downloadingFiles.set(src, progress);
-            this.$forceUpdate();
-          }
-        }
-
-        const blob = new Blob(chunks);
-        const cache = await caches.open('audio-cache');
-        await cache.put(src, new Response(blob));
-        this.downloadedFiles.push(src);
-        this.downloadingFiles.delete(src);
-        this.$forceUpdate();
-      } catch (error) {
-        console.error('Download failed:', error);
-        this.downloadingFiles.delete(src);
-        this.$forceUpdate();
+    // Charger les enregistrements depuis l’API
+    try {
+      const response = await axios.get(`/api/recordings/${this.category}`);
+      console.log('Recordings received from API:', response.data);
+      this.recordings = response.data.recordings || [];
+      this.categoryDescription = response.data.categoryDescription || '';
+      // Stocker les données complètes dans localStorage (si elles ne sont pas déjà présentes)
+      const existingData = localStorage.getItem('meditations-data');
+      if (!existingData) {
+        const categoriesResponse = await axios.get('/api/categories');
+        localStorage.setItem('meditations-data', JSON.stringify({
+          categories: categoriesResponse.data,
+          recordings: (await axios.get('/api/recordings')).data
+        }));
       }
-    },
-    async clearCache() {
-      try {
-        const cache = await caches.open('audio-cache');
-        const keys = await cache.keys();
-        await Promise.all(keys.map(key => cache.delete(key)));
-        this.downloadedFiles = [];
-        this.downloadingFiles.clear();
-        this.$forceUpdate();
-        alert('Cache vidé avec succès !');
-      } catch (error) {
-        console.error('Error clearing cache:', error);
-        alert('Erreur lors du vidage du cache.');
+    } catch (error) {
+      console.error('Error fetching recordings:', error);
+      if (!cachedData) {
+        this.recordings = [];
+        this.categoryDescription = '';
       }
-    },
-    async deleteSingleRecording(src) {
-      try {
-        const cache = await caches.open('audio-cache');
-        await cache.delete(src);
-        this.downloadedFiles = this.downloadedFiles.filter(url => url !== src);
-        this.$forceUpdate();
-        alert('Enregistrement supprimé avec succès !');
-      } catch (error) {
-        console.error('Error deleting recording:', error);
-        alert('Erreur lors de la suppression de l\'enregistrement.');
-      }
-    },
-    isDownloaded(src) {
-      return this.downloadedFiles.includes(src);
-    },
-    isDownloading(src) {
-      return this.downloadingFiles.has(src);
-    },
-    downloadProgress(src) {
-      return this.downloadingFiles.get(src) || 0;
+    } finally {
+      this.isLoadingRecordings = false;
     }
   }
 };
@@ -147,85 +76,31 @@ export default {
 
 <style scoped>
 .category-page {
+  text-align: center;
   padding: 20px;
   font-family: 'Arial', sans-serif;
 }
-.back-button {
-  display: inline-block;
-  margin-bottom: 20px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background: #f0f0f0;
-  text-decoration: none;
+h1 {
+  font-size: 1.5rem;
   color: #333;
-  border-radius: 5px;
 }
-.back-button:hover {
-  background: #ddd;
-}
-.clear-cache-button {
-  display: inline-block;
+p {
+  color: #666;
   margin-bottom: 20px;
-  margin-left: 10px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background: #ff4d4f;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
 }
-.clear-cache-button:hover {
-  background: #e6393b;
+.loading, .error {
+  margin: 20px 0;
+  color: #666;
+  font-family: 'Arial', sans-serif;
 }
-.category-description {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #f0f0f0;
+.recordings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .recording {
-  margin-bottom: 20px;
-}
-h1 {
-  font-family: 'Arial', sans-serif;
-  font-size: 1.17rem;
-}
-h2, h3, p {
-  font-family: 'Arial', sans-serif;
-}
-button {
-  margin-left: 10px;
-  padding: 5px 10px;
   border: 1px solid #ccc;
-  background: #f0f0f0;
-  cursor: pointer;
+  padding: 10px;
   border-radius: 5px;
-  font-family: 'Arial', sans-serif;
-}
-button:hover {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-.downloaded-button {
-  background: #48BB78; /* Vert discret pour "Téléchargé" */
-}
-.downloaded-button:hover {
-  background: #38A169; /* Vert plus foncé au survol */
-  color: white;
-  border-color: #38A169;
-}
-.download-message {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: #555;
-}
-.download-message a {
-  color: #ff4d4f;
-  text-decoration: none;
-}
-.download-message a:hover {
-  text-decoration: underline;
 }
 </style>

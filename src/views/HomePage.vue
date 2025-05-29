@@ -10,7 +10,13 @@
       <p>1. Appuyez sur l'icône de partage <img src="/share-icon.png" alt="Share Icon" class="share-icon" /> dans Safari.</p>
       <p>2. Sélectionnez "Ajouter à l'écran d'accueil".</p>
     </div>
-    <div class="categories">
+    <div v-if="isLoadingCategories" class="loading">
+      Chargement des catégories...
+    </div>
+    <div v-else-if="categories.length === 0" class="error">
+      Impossible de charger les catégories. Veuillez vérifier votre connexion.
+    </div>
+    <div v-else class="categories">
       <router-link
         v-for="(category, index) in categories"
         :key="category.name"
@@ -46,28 +52,43 @@ export default {
       deferredPrompt: null,
       showInstallButton: false,
       showIOSPrompt: false,
-      isIOS: false
+      isIOS: false,
+      isLoadingCategories: true // Ajouté pour gérer l’état de chargement
     };
   },
- async created() {
-  try {
-    const response = await axios.get('/api/categories'); // Doit être relatif
-    console.log('Categories received from API:', response.data);
-    this.categories = response.data.filter(category => category.name !== 'lisez - moi');
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-  }
-
+  async created() {
     // Detect iOS
     const userAgent = window.navigator.userAgent;
     this.isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
     this.showIOSPrompt = this.isIOS && !window.matchMedia('(display-mode: standalone)').matches;
+
+    // Charger les catégories depuis localStorage (si disponibles)
+    const cachedCategories = localStorage.getItem('meditations-categories');
+    if (cachedCategories) {
+      this.categories = JSON.parse(cachedCategories).filter(category => category.name !== 'lisez - moi');
+      this.isLoadingCategories = false;
+    }
+
+    // Charger les catégories depuis l’API
+    try {
+      const response = await axios.get('/api/categories');
+      console.log('Categories received from API:', response.data);
+      this.categories = response.data.filter(category => category.name !== 'lisez - moi');
+      // Stocker les catégories dans localStorage
+      localStorage.setItem('meditations-categories', JSON.stringify(response.data));
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      // Si localStorage contient des données, on les a déjà chargées
+      if (!cachedCategories) {
+        this.categories = [];
+      }
+    } finally {
+      this.isLoadingCategories = false;
+    }
   },
   mounted() {
-    // Réévaluer les conditions d'affichage à chaque montage
     this.updateInstallButtonVisibility();
 
-    // Ajouter les écouteurs d'événements
     this.handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       this.deferredPrompt = e;
@@ -83,7 +104,6 @@ export default {
     window.addEventListener('appinstalled', this.handleAppInstalled);
   },
   beforeDestroy() {
-    // Supprimer les écouteurs d'événements pour éviter les fuites de mémoire
     window.removeEventListener('beforeinstallprompt', this.handleBeforeInstallPrompt);
     window.removeEventListener('appinstalled', this.handleAppInstalled);
   },
@@ -105,7 +125,6 @@ export default {
       }
     },
     updateInstallButtonVisibility() {
-      // Vérifier les conditions pour afficher le bouton
       this.showInstallButton = !this.isIOS && !window.matchMedia('(display-mode: standalone)').matches && !!this.deferredPrompt;
     }
   }
@@ -156,6 +175,11 @@ h1 {
   width: 20px;
   height: 20px;
   vertical-align: middle;
+}
+.loading, .error {
+  margin: 20px 0;
+  color: #666;
+  font-family: 'Arial', sans-serif;
 }
 .categories {
   display: flex;
