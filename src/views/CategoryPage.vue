@@ -33,15 +33,13 @@ export default {
       categoryDescription: '',
       recordings: [],
       isLoadingRecordings: true,
-      isOnline: navigator.onLine // État initial basé sur navigator.onLine
+      isOnline: navigator.onLine
     };
   },
   async created() {
-    // Écouter les changements de connexion
     window.addEventListener('online', this.updateOnlineStatus);
     window.addEventListener('offline', this.updateOnlineStatus);
 
-    // Charger les enregistrements depuis localStorage (si disponibles)
     const cachedData = localStorage.getItem('meditations-data');
     let cachedRecordings = [];
     let cachedCategoryDescription = '';
@@ -56,7 +54,6 @@ export default {
       this.isLoadingRecordings = false;
     }
 
-    // Charger les enregistrements depuis l’API
     try {
       const response = await axios.get(`/api/recordings/${this.category}`);
       console.log('Recordings received from API:', response.data);
@@ -98,7 +95,7 @@ export default {
   text-align: center;
   padding: 20px;
   font-family: 'Arial', sans-serif;
-  position: relative; /* Ajouté pour positionner l’icône */
+  position: relative;
 }
 .offline-indicator {
   position: absolute;

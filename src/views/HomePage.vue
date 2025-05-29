@@ -15,6 +15,10 @@
       <p>1. Appuyez sur l'icône de partage <img src="/share-icon.png" alt="Share Icon" class="share-icon" /> dans Safari.</p>
       <p>2. Sélectionnez "Ajouter à l'écran d'accueil".</p>
     </div>
+    <div v-if="showUpdatePrompt" class="update-prompt">
+      <p>Une nouvelle version est disponible !</p>
+      <button @click="updateApp">Mettre à jour maintenant</button>
+    </div>
     <div v-if="isLoadingCategories" class="loading">
       Chargement des catégories...
     </div>
@@ -59,7 +63,9 @@ export default {
       showIOSPrompt: false,
       isIOS: false,
       isLoadingCategories: true,
-      isOnline: navigator.onLine // État initial basé sur navigator.onLine
+      isOnline: navigator.onLine,
+      showUpdatePrompt: false, // Ajouté pour afficher la notification de mise à jour
+      newWorker: null // Ajouté pour stocker le nouveau service worker
     };
   },
   async created() {
@@ -96,6 +102,22 @@ export default {
   },
   mounted() {
     this.updateInstallButtonVisibility();
+
+    // Gérer les mises à jour du service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(registration => {
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // Une nouvelle version est disponible
+              this.newWorker = newWorker;
+              this.showUpdatePrompt = true;
+            }
+          });
+        });
+      });
+    }
 
     this.handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
@@ -140,6 +162,13 @@ export default {
     updateOnlineStatus() {
       this.isOnline = navigator.onLine;
       console.log('Online status:', this.isOnline ? 'Online' : 'Offline');
+    },
+    updateApp() {
+      if (this.newWorker) {
+        this.newWorker.postMessage({ type: 'SKIP_WAITING' });
+        this.showUpdatePrompt = false;
+        window.location.reload();
+      }
     }
   }
 };
@@ -150,13 +179,42 @@ export default {
   text-align: center;
   padding: 20px;
   font-family: 'Arial', sans-serif;
-  position: relative; /* Ajouté pour positionner l’icône */
+  position: relative;
 }
 .offline-indicator {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 1000;
+}
+.update-prompt {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+}
+.update-prompt p {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
+.update-prompt button {
+  padding: 5px 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+}
+.update-prompt button:hover {
+  background: #0056b3;
 }
 .logo {
   width: 112.5px;
