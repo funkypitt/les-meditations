@@ -1,8 +1,14 @@
 <template>
   <div class="home">
-    <div class="offline-indicator" v-if="!isOnline">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="connection-indicator">
+      <svg v-if="!isOnline" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M21 3L3 10L12 12L14 21L21 3Z" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 20H12.01" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 16C13.6569 16 15 14.6569 15 13C15 11.3431 13.6569 10 12 10C10.3431 10 9 11.3431 9 13C9 14.6569 10.3431 16 12 16Z" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5.636 18.364C8.464 15.536 15.536 15.536 18.364 18.364" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2.807 15.536C7.269 11.074 16.731 11.074 21.193 15.536" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
     <img src="/logo.png" alt="Logo" class="logo" />
@@ -64,28 +70,24 @@ export default {
       isIOS: false,
       isLoadingCategories: true,
       isOnline: navigator.onLine,
-      showUpdatePrompt: false, // Ajouté pour afficher la notification de mise à jour
-      newWorker: null // Ajouté pour stocker le nouveau service worker
+      showUpdatePrompt: false,
+      newWorker: null
     };
   },
   async created() {
-    // Écouter les changements de connexion
     window.addEventListener('online', this.updateOnlineStatus);
     window.addEventListener('offline', this.updateOnlineStatus);
 
-    // Detect iOS
     const userAgent = window.navigator.userAgent;
     this.isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
     this.showIOSPrompt = this.isIOS && !window.matchMedia('(display-mode: standalone)').matches;
 
-    // Charger les catégories depuis localStorage (si disponibles)
     const cachedCategories = localStorage.getItem('meditations-categories');
     if (cachedCategories) {
       this.categories = JSON.parse(cachedCategories).filter(category => category.name !== 'lisez - moi');
       this.isLoadingCategories = false;
     }
 
-    // Charger les catégories depuis l’API
     try {
       const response = await axios.get('/api/categories');
       console.log('Categories received from API:', response.data);
@@ -103,14 +105,12 @@ export default {
   mounted() {
     this.updateInstallButtonVisibility();
 
-    // Gérer les mises à jour du service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').then(registration => {
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // Une nouvelle version est disponible
               this.newWorker = newWorker;
               this.showUpdatePrompt = true;
             }
@@ -181,7 +181,7 @@ export default {
   font-family: 'Arial', sans-serif;
   position: relative;
 }
-.offline-indicator {
+.connection-indicator {
   position: absolute;
   top: 10px;
   right: 10px;
