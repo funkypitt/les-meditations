@@ -1,6 +1,6 @@
-const CACHE_NAME = 'meditations-cache-v1';
-const API_CACHE_NAME = 'meditations-api-cache-v1';
-const MP3_CACHE_NAME = 'meditations-mp3-cache-v1';
+const CACHE_NAME = 'meditations-cache-v2';
+const API_CACHE_NAME = 'meditations-api-cache-v2';
+const MP3_CACHE_NAME = 'meditations-mp3-cache-v2';
 
 const STATIC_ASSETS = [
   '/',
