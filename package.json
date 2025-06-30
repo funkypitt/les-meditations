@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node -e \"const fs = require('fs'); const commit = require('child_process').execSync('git rev-parse HEAD').toString().trim(); fs.writeFileSync('src/views/CategoryPage.vue', fs.readFileSync('src/views/CategoryPage.vue', 'utf8').replace(/buildCode: '[^']+'/, `buildCode: '${commit}'`));\" && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

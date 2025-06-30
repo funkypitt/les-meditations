@@ -25,7 +25,14 @@ export default defineConfig({
             type: 'image/png'
           }
         ]
-      }
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,png,mp3}'], // Inclure les MP3 et autres fichiers
+        skipWaiting: true, // Force l’activation immédiate (cohérent avec sw.js)
+        clientsClaim: true // Prend le contrôle immédiatement
+      },
+      srcDir: 'src',
+      filename: 'sw.js' // Utilise votre fichier sw.js personnalisé
     })
   ]
 });
