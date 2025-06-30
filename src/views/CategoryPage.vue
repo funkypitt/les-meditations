@@ -23,7 +23,13 @@
       <div v-for="recording in recordings" :key="recording.id" class="recording">
         <h3>{{ recording.name }}</h3>
         <p>{{ recording.description }}</p>
-        <audio controls :src="recording.url"></audio>
+        <audio controls :src="recording.url" @loadeddata="checkDownloadStatus(recording)"></audio>
+        <button v-if="isOnline && !isDownloaded(recording)" @click="downloadRecording(recording)" class="download-button">
+          Télécharger
+        </button>
+        <p v-if="isDownloaded(recording)" class="download-status">
+          Vous avez téléchargé cet enregistrement et pouvez maintenant l'écouter en mode avion (maximum 1 téléchargement).
+        </p>
       </div>
     </div>
   </div>
@@ -39,7 +45,8 @@ export default {
       categoryDescription: '',
       recordings: [],
       isLoadingRecordings: true,
-      isOnline: navigator.onLine
+      isOnline: navigator.onLine,
+      downloadedUrl: null // Stocke l'URL du MP3 téléchargé
     };
   },
   async created() {
@@ -91,6 +98,37 @@ export default {
     updateOnlineStatus() {
       this.isOnline = navigator.onLine;
       console.log('Online status:', this.isOnline ? 'Online' : 'Offline');
+    },
+    isDownloaded(recording) {
+      return this.downloadedUrl === recording.url;
+    },
+    async downloadRecording(recording) {
+      if (!this.isOnline) {
+        alert('Veuillez vous connecter à Internet pour télécharger.');
+        return;
+      }
+      if (this.downloadedUrl) {
+        // Effacer le téléchargement précédent
+        const cache = await caches.open('meditations-mp3-cache-v1');
+        await cache.delete(this.downloadedUrl);
+        console.log('Précédent MP3 effacé:', this.downloadedUrl);
+      }
+      // Télécharger et mettre en cache le nouvel MP3
+      const response = await fetch(recording.url);
+      if (response.status === 200) {
+        const blob = await response.blob();
+        const cache = await caches.open('meditations-mp3-cache-v1');
+        await cache.put(recording.url, new Response(blob));
+        this.downloadedUrl = recording.url;
+        console.log('Nouveau MP3 téléchargé:', recording.url);
+      } else {
+        alert('Erreur lors du téléchargement.');
+      }
+    },
+    checkDownloadStatus(recording) {
+      if (this.isDownloaded(recording) && !this.isOnline) {
+        console.log('Lecture hors ligne confirmée:', recording.url);
+      }
     }
   }
 };
@@ -131,5 +169,26 @@ p {
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
+}
+.download-button {
+  padding: 5px 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.download-button:hover {
+  background: #0056b3;
+}
+.download-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.download-status {
+  color: #28a745;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 </style>
