@@ -28,9 +28,14 @@
           Télécharger
         </button>
         <p v-if="isDownloaded(recording)" class="download-status">
-          Vous avez téléchargé cet enregistrement et pouvez maintenant l'écouter en mode avion (maximum 1 téléchargement).
+          Vous avez téléchargé cet enregistrement et pouvez maintenant l'écouter en mode avion. 
+          <a href="#" @click.prevent="clearDownload(recording)">Cliquez ici</a> pour effacer la version téléchargée 
+          (ou utilisez le bouton "Vider le cache" pour effacer toutes les données téléchargées) (maximum 1 téléchargement).
         </p>
       </div>
+    </div>
+    <div class="version-info">
+      App version ({{ buildCode }})
     </div>
   </div>
 </template>
@@ -46,7 +51,8 @@ export default {
       recordings: [],
       isLoadingRecordings: true,
       isOnline: navigator.onLine,
-      downloadedUrl: null // Stocke l'URL du MP3 téléchargé
+      downloadedUrl: null,
+      buildCode: '05a1bf7'
     };
   },
   async created() {
@@ -108,12 +114,10 @@ export default {
         return;
       }
       if (this.downloadedUrl) {
-        // Effacer le téléchargement précédent
         const cache = await caches.open('meditations-mp3-cache-v1');
         await cache.delete(this.downloadedUrl);
         console.log('Précédent MP3 effacé:', this.downloadedUrl);
       }
-      // Télécharger et mettre en cache le nouvel MP3
       const response = await fetch(recording.url);
       if (response.status === 200) {
         const blob = await response.blob();
@@ -128,6 +132,15 @@ export default {
     checkDownloadStatus(recording) {
       if (this.isDownloaded(recording) && !this.isOnline) {
         console.log('Lecture hors ligne confirmée:', recording.url);
+      }
+    },
+    async clearDownload(recording) {
+      if (this.downloadedUrl === recording.url) {
+        const cache = await caches.open('meditations-mp3-cache-v1');
+        await cache.delete(this.downloadedUrl);
+        this.downloadedUrl = null;
+        console.log('MP3 effacé:', recording.url);
+        alert('Le téléchargement a été effacé.');
       }
     }
   }
@@ -190,5 +203,22 @@ p {
   color: #28a745;
   font-size: 0.9rem;
   margin-top: 5px;
+}
+.download-status a {
+  color: #dc3545;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.download-status a:hover {
+  color: #a71d2a;
+}
+.version-info {
+  font-size: 0.7rem;
+  color: #666;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 </style>
