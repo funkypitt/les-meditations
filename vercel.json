@@ -7,6 +7,10 @@
     {
       "src": "dist/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "public/sw.js",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
