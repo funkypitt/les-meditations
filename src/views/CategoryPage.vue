@@ -52,7 +52,7 @@ export default {
       isLoadingRecordings: true,
       isOnline: navigator.onLine,
       downloadedUrl: null,
-      buildCode: '05a1bf7'
+      undefined
     };
   },
   async created() {
