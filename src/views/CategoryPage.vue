@@ -33,10 +33,7 @@
           (ou utilisez le bouton "Vider le cache" pour effacer toutes les données téléchargées) (maximum 1 téléchargement).
         </p>
       </div>
-    </div>
-    <div class="version-info">
-      App version ({{ buildCode }})
-    </div>
+    </div>    
   </div>
 </template>
 
@@ -52,7 +49,6 @@ export default {
       isLoadingRecordings: true,
       isOnline: navigator.onLine,
       downloadedUrl: null,
-      undefined, 
       undefined
     };
   },
