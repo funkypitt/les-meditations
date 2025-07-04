@@ -52,6 +52,7 @@ export default {
       isLoadingRecordings: true,
       isOnline: navigator.onLine,
       downloadedUrl: null,
+      undefined, 
       undefined
     };
   },

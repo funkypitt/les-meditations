@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "node -e \"const fs = require('fs'); const commit = require('child_process').execSync('git rev-parse HEAD').toString().trim(); fs.writeFileSync('src/views/CategoryPage.vue', fs.readFileSync('src/views/CategoryPage.vue', 'utf8').replace(/buildCode: '[^']+'/, `buildCode: '${commit}'`));\" && vite build",
-    "preview": "vite preview"
-  },
+  "dev": "vite",
+  "build": "node -e \"const fs = require('fs'); const path = 'src/views/CategoryPage.vue'; const commit = require('child_process').execSync('git rev-parse HEAD').toString().trim(); const contents = fs.readFileSync(path, 'utf8'); const updated = contents.replace(/buildCode: '.*?'/, `buildCode: '${commit}'`); fs.writeFileSync(path, updated);\" && vite build",
+  "preview": "vite preview"
+},
   "dependencies": {
     "axios": "^1.9.0",
     "vue": "^3.5.13",
@@ -19,3 +19,4 @@
     "vite-plugin-pwa": "^1.0.0"
   }
 }
+
