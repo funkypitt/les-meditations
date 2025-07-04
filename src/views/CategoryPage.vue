@@ -1,42 +1,31 @@
-<template>
-  <div class="category-page">
-    <div class="connection-indicator">
-      <svg v-if="!isOnline" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M21 3L3 10L12 12L14 21L21 3Z" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 20H12.01" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 16C13.6569 16 15 14.6569 15 13C15 11.3431 13.6569 10 12 10C10.3431 10 9 11.3431 9 13C9 14.6569 10.3431 16 12 16Z" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M5.636 18.364C8.464 15.536 15.536 15.536 18.364 18.364" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M2.807 15.536C7.269 11.074 16.731 11.074 21.193 15.536" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+<template><div class="category-page">
+    <h1>Méditations guidées d'enpleineconscience.ch</h1>
+    <router-link to="/" class="back-button">Retour aux catégories</router-link>
+    <button class="clear-cache-button" @click="clearCache">Vider le cache</button>
+    <h2>{{ category }}</h2>
+    <div v-if="categoryDescription" class="category-description" v-html="categoryDescription"></div>
+    <div v-for="recording in filteredRecordings" :key="recording.id" class="recording">
+      <h3 v-html="recording.name"></h3>
+      <p v-if="recording.description">{{ recording.description }}</p>
+      <audio controls :src="recording.url"></audio>
+      <button
+        :class="{ 'downloaded-button': isDownloaded(recording.url) }"
+        @click="downloadRecording(recording)"
+      >
+        <span v-if="isDownloading(recording.url)">
+          Téléchargement... {{ downloadProgress(recording.url) }}%
+        </span>
+        <span v-else>
+          {{ isDownloaded(recording.url) ? 'Téléchargé' : 'Télécharger' }}
+        </span>
+      </button>
+      <p v-if="isDownloaded(recording.url)" class="download-message">
+        Vous avez téléchargé cet enregistrement et pouvez maintenant l'écouter en mode avion.
+        <a href="#" @click.prevent="deleteSingleRecording(recording.url)">Cliquez ici</a>
+        pour effacer la version téléchargée (ou utilisez le bouton "Vider le cache" pour effacer toutes les données téléchargées).
+      </p>
     </div>
-    <h1>{{ category }}</h1>
-    <p>{{ categoryDescription }}</p>
-    <div v-if="isLoadingRecordings" class="loading">
-      Chargement des enregistrements...
-    </div>
-    <div v-else-if="recordings.length === 0" class="error">
-      Aucun enregistrement disponible. Veuillez vérifier votre connexion.
-    </div>
-    <div v-else class="recordings">
-      <div v-for="recording in recordings" :key="recording.id" class="recording">
-        <h3>{{ recording.name }}</h3>
-        <p>{{ recording.description }}</p>
-        <audio controls :src="recording.url" @loadeddata="checkDownloadStatus(recording)"></audio>
-        <button v-if="isOnline && !isDownloaded(recording)" @click="downloadRecording(recording)" class="download-button">
-          Télécharger
-        </button>
-        <p v-if="isDownloaded(recording)" class="download-status">
-          Vous avez téléchargé cet enregistrement et pouvez maintenant l'écouter en mode avion. 
-          <a href="#" @click.prevent="clearDownload(recording)">Cliquez ici</a> pour effacer la version téléchargée 
-          (ou utilisez le bouton "Vider le cache" pour effacer toutes les données téléchargées) (maximum 1 téléchargement).
-        </p>
-      </div>
-    </div>    
-  </div>
-</template>
-
+  </div></template>
 <script>
 import axios from 'axios';
 
@@ -105,25 +94,43 @@ export default {
     isDownloaded(recording) {
       return this.downloadedUrl === recording.url;
     },
-    async downloadRecording(recording) {
-      if (!this.isOnline) {
-        alert('Veuillez vous connecter à Internet pour télécharger.');
-        return;
-      }
-      if (this.downloadedUrl) {
+    async async downloadRecording(recording) {
+      const src = recording.url;
+      if (this.isDownloaded(recording) || this.isDownloading(recording)) return;
+
+      this.downloadingFiles.set(src, 0);
+
+      try {
+        const response = await fetch(src);
+        const reader = response.body.getReader();
+        const contentLength = +response.headers.get('Content-Length');
+        let receivedLength = 0;
+        const chunks = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          chunks.push(value);
+          receivedLength += value.length;
+
+          if (contentLength) {
+            const progress = Math.round((receivedLength / contentLength) * 100);
+            this.downloadingFiles.set(src, progress);
+            this.$forceUpdate();
+          }
+        }
+
+        const blob = new Blob(chunks);
         const cache = await caches.open('meditations-mp3-cache-v1');
-        await cache.delete(this.downloadedUrl);
-        console.log('Précédent MP3 effacé:', this.downloadedUrl);
-      }
-      const response = await fetch(recording.url);
-      if (response.status === 200) {
-        const blob = await response.blob();
-        const cache = await caches.open('meditations-mp3-cache-v1');
-        await cache.put(recording.url, new Response(blob));
-        this.downloadedUrl = recording.url;
-        console.log('Nouveau MP3 téléchargé:', recording.url);
-      } else {
-        alert('Erreur lors du téléchargement.');
+        await cache.put(src, new Response(blob));
+        this.downloadedUrl = src;
+        this.downloadingFiles.delete(src);
+        console.log('Méditation téléchargée :', src);
+      } catch (e) {
+        console.error("Erreur de téléchargement :", e);
+        this.downloadingFiles.delete(src);
+        alert("Impossible de télécharger le fichier.");
       }
     },
     checkDownloadStatus(recording) {
