@@ -1,6 +1,7 @@
 export default {
     name: 'assise (respiration)',
-    description: 'La méditation assise centrée sur la respiration consiste à porter son attention sur les sensations de la respiration dans le corps, respiration après respiration.  <h3> remarque importante </h3> <p> Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit: 1) télécharger l\'enregistrement choisi à l\'aide du bouton à droite de celui-ci. 2) mettre votre appareil en mode avion 3) appuyer sur play! En cas de problème, les enregistrements sont aussi disponibles à l\'écoute et au téléchargement au format mp3 <a href=\"https://www.enpleineconscience.ch/meditations-guidees-mp3/\">sur mon site</a>.</p>',
+    slug: 'assise-respiration',
+    description: 'La méditation assise centrée sur la respiration consiste à porter son attention sur les sensations de la respiration dans le corps, respiration après respiration.',
     recordings: [
         {
             name: 'assise centrée sur la respiration, 40\'',

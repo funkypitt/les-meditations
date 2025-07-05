@@ -1,6 +1,7 @@
 export default {
     name: 'suites',
-    description: 'Ces \"suites méditatives\" sont simplement des enchaînements de méditations différentes qui totalisent plus d\'1h. Plus encore que pour les autres méditations, je vous recommande d\'utiliser le bouton rond à droite pour les télécharger avant écoute pour éviter toute interruption. Le risque de coupure de réseau durant la lecture est en effet plus grand pour un fichier audio plus gros.  <h3> remarque importante </h3> <p> Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit: 1) télécharger l\'enregistrement choisi à l\'aide du bouton à droite de celui-ci. 2) mettre votre appareil en mode avion 3) appuyer sur play! En cas de problème, les enregistrements sont aussi disponibles à l\'écoute et au téléchargement au format mp3 <a href=\"https://www.enpleineconscience.ch/meditations-guidees-mp3/\">sur mon site</a>. </p>',
+    slug: 'suites',
+    description: 'Ces \"suites méditatives\" sont simplement des enchaînements de méditations différentes qui totalisent plus d\'1h. Plus encore que pour les autres méditations, je vous recommande d\'utiliser le bouton rond à droite pour les télécharger avant écoute pour éviter toute interruption. Le risque de coupure de réseau durant la lecture est en effet plus grand pour un fichier audio plus gros.',
     recordings: [
         {
             name: 'étirements couché, bodyscan, assise puis bienveillance, 85\' (02/18)',

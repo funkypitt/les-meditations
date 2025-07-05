@@ -1,6 +1,7 @@
 export default {
     name: 'mini-méditations 10+',
-    description: 'Ces méditations courtes concernent souvent des situations spécifiques abordées durant les formations et  s\'adressent en priorité à des personnes ayant appris à utiliser ces techniques au préalable.  <h3> remarque importante </h3> <p> Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit: 1) télécharger l\'enregistrement choisi à l\'aide du bouton à droite de celui-ci. 2) mettre votre appareil en mode avion 3) appuyer sur play! </p>',
+    slug: 'mini-meditations',
+    description: 'Ces méditations courtes concernent souvent des situations spécifiques abordées durant les formations et  s\'adressent en priorité à des personnes ayant appris à utiliser ces techniques au préalable.',
     recordings: [
         {
             name: 'gratitude pour 3 personnes, 10\'',

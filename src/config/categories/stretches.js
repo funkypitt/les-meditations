@@ -1,6 +1,7 @@
 export default {
     name: 'étirements',
-    description: 'Ces étirements inspirés du yoga se pratiquent comme une \"méditation en mouvement\", les yeux fermés quand c\'est possible, l\'attention focalisée sur les sensations dans le corps et la respiration. Les participants au cours ont accès à des illustrations explicatives. Seuls les mouvements qui vous conviennent doivent être pratiqués, et la supervision d\'un formateur est prescrite avant une première utilisation.  <h3> remarque importante </h3> <p> Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit: 1) télécharger l\'enregistrement choisi à l\'aide du bouton à droite de celui-ci. 2) mettre votre appareil en mode avion 3) appuyer sur play! En cas de problème, les enregistrements sont aussi disponibles à l\'écoute et au téléchargement au format mp3 <a href=\"https://www.enpleineconscience.ch/meditations-guidees-mp3/\">sur mon site</a>. </p>',
+    slug: 'etirements',
+    description: 'Ces étirements inspirés du yoga se pratiquent comme une \"méditation en mouvement\", les yeux fermés quand c\'est possible, l\'attention focalisée sur les sensations dans le corps et la respiration. Les participants au cours ont accès à des illustrations explicatives. Seuls les mouvements qui vous conviennent doivent être pratiqués, et la supervision d\'un formateur est prescrite avant une première utilisation.',
     recordings: [
         {
             name: '(mbsr) étirements couché, 45 min',
