@@ -4,9 +4,7 @@
 
 <template>
     <l-header />
-    <main class="wrapper mt-20 mb-24 py-8">
-      <router-view />
-    </main>
+    <l-main />
     <l-download />
 </template>
 
@@ -18,7 +16,8 @@
 
 <script setup>
 
-  import LHeader from '#src/components/l-header.vue'
-  import LDownload from '#src/components/l-download.vue'
+  import LHeader from '#src/layout/l-header.vue'
+  import LMain from '#src/layout/l-main.vue'
+  import LDownload from '#src/layout/l-download.vue'
 
 </script>

@@ -2,9 +2,28 @@
     Template
 -->
 
-<style>
+<style scoped>
 
+  .recording {
+    display: flex;
+    align-items: center;
+  }
+  .recording .button {
+    flex-shrink: 0;
+  }
+  .recording_text {
+    margin-left: 16px;
+    flex-grow: 1;
+  }
 
+  .player {
+    margin-top: 16px;
+  }
+  .player_time {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
 
 </style>
 
@@ -20,30 +39,30 @@
 
   <div v-for="(item, index) in category.recordings" class="tile">
 
-    <div class="flex items-center">
+    <div class="recording">
 
-      <button class="flex shrink-0 h-12 w-12 bg-sky-600 text-white rounded-[50%]" @click="toggle(index)">
-        <icon-pause v-if="index === active" class="h-6 m-auto" />
-        <icon-play v-else class="h-6 m-auto" />
+      <button class="button _primary" @click="toggle(index)">
+        <icon-pause v-if="index === active" class="icon" />
+        <icon-play v-else class="icon" />
       </button>
 
-      <div class="ml-4 grow">
+      <div class="recording_text">
         <h2>{{ item.name }}</h2>
-        <p class="text-sm text-slate-600">{{ item.description }}</p>
+        <p class="t-sm t-grey">{{ item.description }}</p>
       </div>
 
-      <button class="flex shrink-0 h-12 w-12 text-sky-600 rounded-[50%]">
-        <icon-download v-if="cached[index]" class="m-auto h-6" />
-        <icon-clear v-else class="m-auto h-6" />
+      <button class="button">
+        <icon-download v-if="cached[index]" class="icon" />
+        <icon-clear v-else class="icon" />
       </button>
 
     </div>
 
-    <div class="mt-4" v-if="index === active">
-      <div class="h-1 bg-slate-200 mb-2">
-        <div class="h-full bg-blue-500 w-[33%]" />
+    <div class="player" v-if="index === active">
+      <div class="progress">
+        <div style="width: 33%" />
       </div>
-      <div class="flex justify-between text-xs text-slate-600">
+      <div class="player_time t-xs t-gray">
         <span>01:01</span>
         <span>45:12</span>
       </div>

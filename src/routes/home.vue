@@ -2,9 +2,13 @@
     Template
 -->
 
-<style>
+<style scoped>
 
-
+  .line {
+    height: 1px;
+    background: #cbd5e1;
+    margin-block: 32px;
+  }
 
 </style>
 
@@ -15,16 +19,16 @@
 -->
 
 <template>
-  <router-link v-for="{ slug, name, recordings } in categories" class="tile" :to="{ name: 'category', params: { slug }}">
-    <h2 class="text-lg text-sky-600">{{ name }}</h2>
-    <p class="text-sm text-slate-600">{{ recordings.length }} enregistrements</p>
+
+  <router-link v-for="{ slug, name } in categories" class="tile" :to="{ name: 'category', params: { slug }}">
+    <h2 class="t-lg t-blue">{{ name }}</h2>
   </router-link>
 
-  <div class="h-px bg-slate-300 my-8" />
+  <div class="line" />
 
   <a class="tile">
-    <h2 class="text-lg text-sky-600">Téléchargements</h2>
-    <p class="text-sm text-slate-600">10 enregistrements</p>
+    <h2 class="t-lg t-blue">Téléchargements</h2>
+    <p class="t-sm t-gray">10 enregistrements</p>
   </a>
 
 </template>

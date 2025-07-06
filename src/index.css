@@ -1,43 +1,140 @@
-@import "tailwindcss";
-
-
-
 /*
-    Variables
+  Variables
 */
 
 :root {
-  --shadow: 0 0 12px -1px rgb(0 0 0 / 0.1), 0 0 8px -4px rgb(0 0 0 / 0.1);
+  --blue: #0284c7;
+  --white: #ffffff;
+  --black: #000000;
+  --gray: #475569;
+  --header: 80px;
+  --download: 86px;
 }
 
 
 
 /*
-    Base
+  Reset
 */
 
-@layer base {
-
-  body {
-    @apply bg-slate-100
-  }
-
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f1f5f9;
+  color: var(--black);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+h1, h2, h3 {
+  margin: 0;
+  font-weight: inherit;
+  font-size: inherit;
+}
+p {
+  margin: 0;
+}
+svg {
+  display: block;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+img {
+  display: block;
+}
+button {
+  border: none;
+  background: none;
 }
 
 
 
 /*
-    Components
+  Typography
 */
 
-@layer components {
-
-  .wrapper {
-    @apply max-w-3xl mx-auto px-4
-  }
-
-  .tile {
-    @apply block bg-white p-4 shadow-md [&:not(:last-child)]:mb-4 rounded-sm
-  }
-
+.t-lg {
+  font-size: 18px;
 }
+.t-md {
+  font-size: 16px;
+}
+.t-sm {
+  font-size: 14px;
+}
+.t-xs {
+  font-size: 12px;
+}
+.t-blue {
+  color: var(--blue);
+}
+.t-gray {
+  color: var(--gray);
+}
+
+
+
+/*
+  Modules
+*/
+
+.wrapper {
+  max-width: 768px;
+  margin-inline: auto;
+  padding-block: 16px;
+}
+
+.tile {
+  display: block;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 4px rgba(0,0,0,0.1);
+}
+.tile:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.overlay {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 0 12px rgba(0,0,0,.2);
+  background: var(--white);
+}
+.overlay .wrapper {
+  height: 100%;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.button {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--blue);
+}
+.button .icon {
+  margin: auto;
+}
+.button._primary {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.progress {
+  height: 4px;
+  background: #e2e8f0;
+}
+.progress div {
+  height: inherit;
+  background: var(--blue);
+}
+
+
