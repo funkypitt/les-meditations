@@ -13,14 +13,14 @@
           <p class="">2. Sélectionnez "Ajouter à l'écran d'accueil".</p>
       </div>
       <button v-else class="block mx-auto bg-blue text-white px-4 py-2 rounded-sm" :class="{ 'bg-gray-300 pointer-events-none': !installPrompt }" @click="install">Installer l'app sur votre smartphone</button>
-      <div class="h-px bg-slate-300 my-8" />
+      <div class="line" />
     </div>
 
     <router-link v-for="{ slug, name } in categories" class="tile" :to="{ name: 'category', params: { slug }}">
       <p class="text-lg text-blue">{{ name }}</p>
     </router-link>
 
-    <div class="h-px bg-slate-300 my-8" />
+    <div class="line" />
 
     <router-link class="tile" :to="{ name: 'downloads' }">
       <p class="text-lg text-blue">Téléchargements</p>

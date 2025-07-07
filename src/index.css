@@ -56,6 +56,10 @@
     @apply max-w-3xl mx-auto px-4;
   }
 
+  .line {
+    @apply h-px bg-slate-300 my-8;
+  }
+
   .tile {
     box-shadow: 0 3px 6px rgba(0,0,0,.1);
     @apply block bg-white p-4 mb-4 rounded-sm last:mb-0;

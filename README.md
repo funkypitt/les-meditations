@@ -15,3 +15,7 @@ https://icones.js.org/collection/lucide
             3) appuyer sur play! En cas de problème, les enregistrements sont aussi disponibles à l'écoute et au téléchargement au format mp3 <a href='https://www.enpleineconscience.ch/meditations-guidees-mp3/'>sur mon site</a>. 
             </p>'
 ```
+
+Todo
+- reformat code to 2 spaces
+- rename recording to rec

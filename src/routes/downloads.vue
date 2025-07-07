@@ -85,7 +85,6 @@
 
   import { computed, ref } from 'vue'
   import { useRoute } from 'vue-router'
-  import { useHeader } from '#src/store.js'
   import categories from '#database/categories.js'
   import IconPlay from '#src/icons/play.svg'
   import IconPause from '#src/icons/pause.svg'
@@ -108,9 +107,5 @@
     else active.value = index;
   }
 
-  useHeader({
-    back: true,
-    title: category.value.name
-  })
 
 </script>
