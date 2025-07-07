@@ -73,16 +73,6 @@
     @apply h-full;
   }
 
-  .button {
-    @apply flex h-12 w-12 text-blue rounded-[50%]
-  }
-  .button .icon {
-    @apply m-auto;
-  }
-  .button._primary {
-    @apply text-white bg-blue;
-  }
-
 }
 
 

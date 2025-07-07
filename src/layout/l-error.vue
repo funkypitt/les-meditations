@@ -7,7 +7,7 @@
     <div class="tile bg-white m-auto w-full max-w-sm">
       <p class="text-lg mb-2">{{ state.error.message }}</p>
       <p class="text-sm text-gray mb-4 wrap-break-word">{{ state.error.stack }}</p>
-      <button class="block ml-auto bg-blue text-white px-4 py-2 rounded-sm" @click="state.error = false">OK</button>
+      <ui-button class="ml-auto" text="OK" @click="state.error = false" />
     </div>
   </header>
 </template>
@@ -21,6 +21,7 @@
 <script setup>
 
   import { inject } from 'vue'
+  import UiButton from '#src/ui/ui-button.vue'
 
   const state = inject('state');
 

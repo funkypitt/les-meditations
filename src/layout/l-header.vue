@@ -6,10 +6,7 @@
   <header class="l-header overlay top-0 h-(--h-header)">
     <div class="wrapper flex items-center">
 
-      <router-link v-if="back" :to="back" class="button">
-        <icon-back class="icon" />
-      </router-link>
-
+      <ui-action v-if="back" :to="back" :icon="IconBack" />
       <img v-else class="h-12 w-12" src="/logo.png">
 
       <div class="ml-2">
@@ -35,6 +32,7 @@
 <script setup>
 
   import { ref, onMounted, onUnmounted } from 'vue'
+  import UiAction from '#src/ui/ui-action.vue'
   import IconBack from '#src/icons/back.svg'
   import IconOnline from '#src/icons/online.svg'
   import IconOffline from '#src/icons/oflline.svg'

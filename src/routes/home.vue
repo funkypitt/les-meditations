@@ -12,7 +12,7 @@
           <p class="">1. Appuyez sur l'icône de partage<icon-share class="inline-block align-baseline h-4" />dans Safari.</p>
           <p class="">2. Sélectionnez "Ajouter à l'écran d'accueil".</p>
       </div>
-      <button v-else class="block mx-auto bg-blue text-white px-4 py-2 rounded-sm" :class="{ 'bg-gray-300 pointer-events-none': !installPrompt }" @click="install">Installer l'app sur votre smartphone</button>
+      <ui-button v-else class="mx-auto" text="Installer l'app sur votre smartphone" :disabled="!installPrompt"/>
       <div class="line" />
     </div>
 
@@ -41,6 +41,7 @@
   import { ref, onMounted, onUnmounted } from 'vue'
   import LHeader from '#src/layout/l-header.vue'
   import LSection from '#src/layout/l-section.vue'
+  import UiButton from '#src/ui/ui-button.vue'
   import IconShare from '#src/icons/share.svg'
   import categories from '#database/categories.js'
 

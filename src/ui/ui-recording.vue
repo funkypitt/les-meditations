@@ -5,42 +5,34 @@
 <template>
   <div class="ui-recording tile" @click="test">
 
-<!--    <div class="flex items-center">-->
+    <div class="flex items-center">
 
-<!--      <button class="button _primary shrink-0" @click="toggle()">-->
-<!--        <icon-pause v-if="active" class="icon" />-->
-<!--        <icon-play v-else class="icon" />-->
-<!--      </button>-->
+      <ui-action v-if="active" primary :icon="IconPause" />
+      <ui-action v-else primary :icon="IconPlay" />
 
-<!--      <div class="ml-4 grow">-->
-<!--        <h2>{{ value.name }}</h2>-->
-<!--        <p class="text-sm text-grey">{{ value.description }}</p>-->
-<!--      </div>-->
+      <div class="ml-4 grow">
+        <h2>{{ value.name }}</h2>
+        <p class="text-sm text-grey">{{ value.description }}</p>
+      </div>
 
-<!--      <div class="shrink-0" v-if="cache !== 'pending'">-->
+      <div class="shrink-0" v-if="cache !== 'pending'">
+        <ui-action v-if="cache || loader.has(props.value)" :icon="IconClear" @click="loader.del(value)" />
+        <ui-action v-else :icon="IconDownload" @click="loader.load(value)" />
+      </div>
 
-<!--        <button class="button" v-if="cache || downloading" @click="clear">-->
-<!--          <icon-clear class="icon" />-->
-<!--        </button>-->
+    </div>
 
-<!--        <button class="button" v-else @click="download">-->
-<!--          <icon-download class="icon" />-->
-<!--        </button>-->
+    <div class="mt-4" v-if="active">
+      <ui-progress :value="0.5" />
+      <div class="flex justify-between mt-2 text-xs text-gray">
+        <span>01:01</span>
+        <span>45:12</span>
+      </div>
+    </div>
 
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="mt-4" v-if="active">-->
-<!--      <ui-progress :value="0.5" />-->
-<!--      <div class="flex justify-between mt-2 text-xs text-gray">-->
-<!--        <span>01:01</span>-->
-<!--        <span>45:12</span>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <audio>-->
-<!--      <source :src="value.url">-->
-<!--    </audio>-->
+    <audio>
+      <source :src="value.url">
+    </audio>
 
   </div>
 </template>
@@ -54,11 +46,12 @@
 
   import { computed, ref } from 'vue'
   import db from '#src/services/db.js'
-  import store from '#src/services/store.js'
+  import loader from '#src/services/loader.js'
   import IconPlay from '#src/icons/play.svg'
   import IconPause from '#src/icons/pause.svg'
   import IconDownload from '#src/icons/download.svg'
   import IconClear from '#src/icons/clear.svg'
+  import UiAction from '#src/ui/ui-action.vue'
   import UiProgress from '#src/ui/ui-progress.vue'
 
   const emit = defineEmits([
@@ -71,32 +64,22 @@
     'active'
   ])
 
-  function test () {
-    store.test()
+
+
+  const cache = ref('pending');
+
+  const downloading = computed(() => {
+    return loader.has(props.value)
+  })
+
+  function toggle () {
+    if (props.active) emit('pause');
+    else emit('play');
   }
 
-  // const cache = ref('pending');
-  //
-  // // const downloading = computed(() => {
-  // //   return store.downloads.find(recording => recording.url === props.value.url);
-  // // })
-  //
-  // function toggle () {
-  //   if (props.active) emit('pause');
-  //   else emit('play');
-  // }
-  //
-  // function download () {
-  //   store.downloads.push(props.value);
-  // }
-  //
-  // function clear () {
-  //
-  // }
-  //
-  // db.get(props.value.url).then(data => {
-  //   cache.value = data;
-  // })
+  db.get(props.value.url).then(data => {
+    cache.value = data;
+  })
 
 
 
