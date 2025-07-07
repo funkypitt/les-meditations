@@ -60,5 +60,5 @@
     window.removeEventListener('online', setOnline);
     window.removeEventListener('offline', setOnline);
   })
-  
+
 </script>
