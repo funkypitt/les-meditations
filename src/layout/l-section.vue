@@ -13,8 +13,7 @@
 -->
 
 <template>
-<!--  <section class="l-main wrapper py-8 mt-(&#45;&#45;h-header)" :class="{ 'mb-(&#45;&#45;h-download)': store.downloads.length }">-->
-  <section class="l-main wrapper py-8 mt-(--h-header)">
+  <section class="l-main wrapper py-8 mt-(--h-header)" :class="{ 'mb-(--h-download)': pending }">
     <slot />
   </section>
 </template>
@@ -27,6 +26,6 @@
 
 <script setup>
 
-  // import store from '#src/services/store.js'
+  import { pending } from '#src/utils/loader.js'
 
 </script>

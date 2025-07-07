@@ -3,13 +3,13 @@
 -->
 
 <template>
-<!--  <aside class="l-download overlay bottom-0 h-(&#45;&#45;h-download) py-4" v-if="store.downloads.length">-->
-<!--    <div class="wrapper flex flex-col">-->
-<!--      <p>Downloading {{ store.downloads.length }} item(s)</p>-->
-<!--      <p class="text-xs text-gray">80%</p>-->
-<!--      <ui-progress class="mt-auto" :value="0.3" />-->
-<!--    </div>-->
-<!--  </aside>-->
+  <aside class="l-download overlay bottom-0 h-(--h-download) py-4" v-if="pending">
+    <div class="wrapper flex flex-col">
+      <p>Downloading {{ 1 }} item(s)</p>
+      <p class="text-xs text-gray">80%</p>
+      <ui-progress class="mt-auto" :value="0.3" />
+    </div>
+  </aside>
 </template>
 
 
@@ -18,10 +18,14 @@
 -->
 
 <script setup>
-//
-//  import { ref, watch } from 'vue'
-//  import store from '#src/services/store.js'
-//  import UiProgress from '#src/ui/ui-progress.vue'
+
+ import { ref, watch } from 'vue'
+ import { pending, default as loader } from '#src/utils/loader.js'
+ import UiProgress from '#src/ui/ui-progress.vue'
+
+
+
+
 //
 //
 //  const active = ref(null);

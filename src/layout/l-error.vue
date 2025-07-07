@@ -20,9 +20,7 @@
 
 <script setup>
 
-  import { inject } from 'vue'
+  import state from '#src/utils/state.js'
   import UiButton from '#src/ui/ui-button.vue'
-
-  const state = inject('state');
 
 </script>

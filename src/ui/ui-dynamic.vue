@@ -33,7 +33,7 @@
   import { useAttrs } from 'vue'
 
   const props = defineProps({
-    to: Object,
+    to: [String, Object],
     href: String,
     type: String,
   })

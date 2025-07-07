@@ -3,8 +3,8 @@
 -->
 
 <template>
-    <router-view />
-<!--    <l-download />-->
+  <router-view />
+  <l-download />
   <l-error />
 </template>
 
