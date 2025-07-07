@@ -34,48 +34,45 @@
 -->
 
 <template>
-  <l-header :title="category.name" back="/" />
-  <l-section>
 
-    <p>{{ category.description }}</p>
+  <p>{{ category.description }}</p>
 
-    <div v-for="(item, index) in category.recordings" class="tile">
+  <div v-for="(item, index) in category.recordings" class="tile">
 
-      <div class="recording">
+    <div class="recording">
 
-        <button class="button _primary" @click="toggle(index)">
-          <icon-pause v-if="index === active" class="icon" />
-          <icon-play v-else class="icon" />
-        </button>
+      <button class="button _primary" @click="toggle(index)">
+        <icon-pause v-if="index === active" class="icon" />
+        <icon-play v-else class="icon" />
+      </button>
 
-        <div class="recording_text">
-          <h2>{{ item.name }}</h2>
-          <p class="text-sm text-grey">{{ item.description }}</p>
-        </div>
-
-        <button class="button">
-          <icon-download v-if="cached[index]" class="icon" />
-          <icon-clear v-else class="icon" />
-        </button>
-
+      <div class="recording_text">
+        <h2>{{ item.name }}</h2>
+        <p class="text-sm text-grey">{{ item.description }}</p>
       </div>
 
-      <div class="player" v-if="index === active">
-        <div class="progress">
-          <div style="width: 33%" />
-        </div>
-        <div class="player_time text-xs text-gray">
-          <span>01:01</span>
-          <span>45:12</span>
-        </div>
-      </div>
+      <button class="button">
+        <icon-download v-if="cached[index]" class="icon" />
+        <icon-clear v-else class="icon" />
+      </button>
 
-      <audio>
-        <source :src="item.url">
-      </audio>
     </div>
 
-  </l-section>
+    <div class="player" v-if="index === active">
+      <div class="progress">
+        <div style="width: 33%" />
+      </div>
+      <div class="player_time text-xs text-gray">
+        <span>01:01</span>
+        <span>45:12</span>
+      </div>
+    </div>
+
+
+    <audio>
+      <source :src="item.url">
+    </audio>
+  </div>
 </template>
 
 
@@ -90,8 +87,6 @@
   import { useRoute } from 'vue-router'
   import { useHeader } from '#src/store.js'
   import categories from '#src/config/categories.js'
-  import LHeader from '#src/layout/l-header.vue'
-  import LSection from '#src/layout/l-section.vue'
   import IconPlay from '#src/icons/play.svg'
   import IconPause from '#src/icons/pause.svg'
   import IconDownload from '#src/icons/download.svg'

@@ -1,59 +1,26 @@
 <!--
-    Styles
--->
-
-<style>
-
-  .l-header {
-    top: 0;
-    height: var(--header);
-  }
-
-  .l-header .wrapper {
-    display: flex;
-    align-items: center;
-  }
-
-  .l-header img {
-    width: 48px;
-    height: 48px;
-  }
-
-  .l-header_text {
-    margin-left: 8px;
-  }
-  .l-header_text .t-sm {
-    margin-top: 4px;
-  }
-
-  .l-header svg:last-child {
-    margin-left: auto;
-  }
-
-</style>
-
-
-
-<!--
     Template
 -->
 
 <template>
-  <header class="l-header overlay">
-    <div class="wrapper">
+  <header class="l-header overlay top-0 h-(--h-header)">
+    <div class="wrapper flex items-center">
 
-      <img v-if="route.name === 'home'" src="/logo.png">
-
-      <router-link v-else to="/" class="button">
+      <router-link v-if="back" :to="back" class="button">
         <icon-back class="icon" />
       </router-link>
 
-      <div class="l-header_text">
-        <h1 class="t-lg">{{ state.header.title }}</h1>
-        <p class="t-sm t-gray">{{ state.header.note }}</p>
+      <img v-else class="h-12 w-12" src="/logo.png">
+
+      <div class="ml-2">
+        <h1 class="text-lg">{{ title }}</h1>
+        <p class="text-sm text-gray" v-if="note">{{ note }}</p>
       </div>
 
-      <icon-online class="icon" />
+      <div class="ml-auto">
+        <icon-online v-if="isOnline" class="icon" />
+        <icon-offline v-else class="icon" />
+      </div>
 
     </div>
   </header>
@@ -67,18 +34,31 @@
 
 <script setup>
 
-  import { computed } from 'vue'
-  import { useRoute } from 'vue-router'
-  import { useState } from '#src/store.js'
+  import { ref, onMounted, onUnmounted } from 'vue'
   import IconBack from '#src/icons/back.svg'
   import IconOnline from '#src/icons/online.svg'
   import IconOffline from '#src/icons/oflline.svg'
 
+  defineProps([
+    'title',
+    'note',
+    'back'
+  ])
 
-  const route = useRoute();
-  const state = useState();
+  const isOnline = ref(navigator.onLine);
 
-  console.log(route)
+  function setOnline () {
+    isOnline.value = navigator.onLine;
+  }
 
+  onMounted(() => {
+    window.addEventListener('online', setOnline);
+    window.addEventListener('offline', setOnline);
+  })
 
+  onUnmounted(() => {
+    window.removeEventListener('online', setOnline);
+    window.removeEventListener('offline', setOnline);
+  })
+  
 </script>

@@ -7,6 +7,7 @@
   .l-download {
     bottom: 0;
     height: var(--download);
+    padding-block: 16px;
   }
 
   .l-download .wrapper {
@@ -31,7 +32,7 @@
   <aside class="l-download overlay">
     <div class="wrapper">
       <p>Downloading 1 item(s)</p>
-      <p class="t-xs t-gray">0.1 MB of 120.7 MB</p>
+      <p class="text-xs text-gray">0.1 MB of 120.7 MB</p>
       <div class="progress">
         <div style="width: 33%" />
       </div>

@@ -3,8 +3,7 @@
 -->
 
 <template>
-    <l-header />
-    <l-main />
+    <router-view />
     <l-download />
 </template>
 
@@ -16,8 +15,6 @@
 
 <script setup>
 
-  import LHeader from '#src/layout/l-header.vue'
-  import LMain from '#src/layout/l-main.vue'
   import LDownload from '#src/layout/l-download.vue'
 
 </script>

@@ -1,140 +1,84 @@
+@import "tailwindcss";
+
+
+
 /*
   Variables
 */
 
 :root {
-  --blue: #0284c7;
-  --white: #ffffff;
-  --black: #000000;
-  --gray: #475569;
-  --header: 80px;
-  --download: 86px;
+  --h-header: 80px;
+  --h-download: 86px;
 }
 
 
 
 /*
-  Reset
+  Theme
 */
 
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  background: #f1f5f9;
-  color: var(--black);
-  font-family: ui-sans-serif, system-ui, sans-serif;
-}
-h1, h2, h3 {
-  margin: 0;
-  font-weight: inherit;
-  font-size: inherit;
-}
-p {
-  margin: 0;
-}
-svg {
-  display: block;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
-img {
-  display: block;
-}
-button {
-  border: none;
-  background: none;
+@theme {
+  --color-blue: var(--color-sky-600);
+  --color-gray: var(--color-slate-600);
 }
 
 
 
 /*
-  Typography
+    Base
 */
 
-.t-lg {
-  font-size: 18px;
-}
-.t-md {
-  font-size: 16px;
-}
-.t-sm {
-  font-size: 14px;
-}
-.t-xs {
-  font-size: 12px;
-}
-.t-blue {
-  color: var(--blue);
-}
-.t-gray {
-  color: var(--gray);
+@layer base {
+
+  body {
+    @apply bg-slate-50;
+  }
+
+  svg {
+    @apply h-6 w-6;
+  }
+
+  button:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
 }
 
 
 
 /*
-  Modules
+    Components
 */
 
-.wrapper {
-  max-width: 768px;
-  margin-inline: auto;
-  padding-block: 16px;
-}
+@layer components {
 
-.tile {
-  display: block;
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 4px;
-  box-shadow: 0 0 2px 4px rgba(0,0,0,0.1);
-}
-.tile:not(:last-child) {
-  margin-bottom: 16px;
-}
+  .wrapper {
+    @apply max-w-3xl mx-auto px-4;
+  }
 
-.overlay {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  box-shadow: 0 0 12px rgba(0,0,0,.2);
-  background: var(--white);
-}
-.overlay .wrapper {
-  height: 100%;
-}
+  .tile {
+    @apply block bg-white p-4 mb-4 rounded-sm last:mb-0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  }
 
-.icon {
-  width: 24px;
-  height: 24px;
-}
+  .overlay {
+    @apply fixed left-0 w-full bg-white;
+    box-shadow: 0 0 12px rgba(0,0,0,.2);
+  }
+  .overlay .wrapper {
+    @apply h-full;
+  }
 
-.button {
-  display: flex;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  color: var(--blue);
-}
-.button .icon {
-  margin: auto;
-}
-.button._primary {
-  background: var(--blue);
-  color: var(--white);
-}
+  .button {
+    @apply flex h-12 w-12 text-blue rounded-[50%]
+  }
+  .button .icon {
+    @apply m-auto;
+  }
+  .button._primary {
+    @apply text-white bg-blue;
+  }
 
-.progress {
-  height: 4px;
-  background: #e2e8f0;
-}
-.progress div {
-  height: inherit;
-  background: var(--blue);
 }
 
 
