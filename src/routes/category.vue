@@ -89,7 +89,7 @@
   import { computed, ref } from 'vue'
   import { useRoute } from 'vue-router'
   import { useHeader } from '#src/store.js'
-  import categories from '#src/config/categories.js'
+  import categories from '#database/categories.js'
   import LHeader from '#src/layout/l-header.vue'
   import LSection from '#src/layout/l-section.vue'
   import IconPlay from '#src/icons/play.svg'

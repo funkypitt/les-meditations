@@ -8,11 +8,11 @@
 
     <div v-if="!isInstalled">
       <div v-if="isIos">
-          <p class="mb-2">Pour installer cette application sur iOS :</p>
-          <p class="text-sm">1. Appuyez sur l'icône de partage<icon-share class="inline-block align-top h-4" />dans Safari.</p>
-          <p class="text-sm">2. Sélectionnez "Ajouter à l'écran d'accueil".</p>
+          <p class="mb-2 font-medium">Pour installer cette application sur iOS :</p>
+          <p class="">1. Appuyez sur l'icône de partage<icon-share class="inline-block align-baseline h-4" />dans Safari.</p>
+          <p class="">2. Sélectionnez "Ajouter à l'écran d'accueil".</p>
       </div>
-      <button v-else class="block mx-auto bg-blue text-white px-4 py-2 rounded-sm" @click="install">Installer l'app sur votre smartphone</button>
+      <button v-else class="block mx-auto bg-blue text-white px-4 py-2 rounded-sm" :class="{ 'bg-gray-300 pointer-events-none': !installPrompt }" @click="install">Installer l'app sur votre smartphone</button>
       <div class="h-px bg-slate-300 my-8" />
     </div>
 
@@ -42,30 +42,34 @@
   import LHeader from '#src/layout/l-header.vue'
   import LSection from '#src/layout/l-section.vue'
   import IconShare from '#src/icons/share.svg'
-  import categories from '#src/config/categories.js'
+  import categories from '#database/categories.js'
 
   const isInstalled = ref(window.matchMedia('(display-mode: standalone)').matches);
-  const isIos = ref(/iPad|iPhone|iPod/.test(window.userAgent) && !window.MSStream);
-
-
-  let installPrompt = null;
-
-  window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    installPrompt = event;
-    console.log('AAAAAA')
-  });
+  const isIos = ref(/iPad|iPhone|iPod/.test(navigator.userAgent));
+  const installPrompt = ref(null);
 
   async function install () {
-    const result = await installPrompt.prompt();
-    installPrompt = null;
+    await installPrompt.value.prompt();
+    installPrompt.value = null;
   }
 
+  function beforeInstall (event) {
+    event.preventDefault();
+    installPrompt.value = event;
+  }
 
-  // onMounted(() => {
-  //
-  // })
+  function onInstall () {
+    isInstalled.value = true;
+  }
 
+  onMounted(() => {
+    window.addEventListener('beforeinstallprompt', beforeInstall);
+    window.addEventListener('appinstalled', onInstall);
+  })
 
+  onUnmounted(() => {
+    window.removeEventListener('beforeinstallprompt', beforeInstall);
+    window.removeEventListener('appinstalled', onInstall);
+  })
 
 </script>

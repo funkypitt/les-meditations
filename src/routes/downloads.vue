@@ -86,7 +86,7 @@
   import { computed, ref } from 'vue'
   import { useRoute } from 'vue-router'
   import { useHeader } from '#src/store.js'
-  import categories from '#src/config/categories.js'
+  import categories from '#database/categories.js'
   import IconPlay from '#src/icons/play.svg'
   import IconPause from '#src/icons/pause.svg'
   import IconDownload from '#src/icons/download.svg'

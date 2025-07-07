@@ -57,13 +57,13 @@
   }
 
   .tile {
+    box-shadow: 0 3px 6px rgba(0,0,0,.1);
     @apply block bg-white p-4 mb-4 rounded-sm last:mb-0;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
   }
 
   .overlay {
-    @apply fixed left-0 w-full bg-white;
     box-shadow: 0 0 12px rgba(0,0,0,.2);
+    @apply fixed left-0 w-full bg-white;
   }
   .overlay .wrapper {
     @apply h-full;
