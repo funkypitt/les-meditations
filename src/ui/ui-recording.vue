@@ -1,23 +1,4 @@
 <!--
-    Styles
--->
-
-<style>
-
-  .ui-recording-enter-active,
-  .ui-recording-leave-active {
-    transition: opacity 0.2s ease;
-  }
-  .ui-recording-enter-from,
-  .ui-recording-leave-to {
-    opacity: 0;
-  }
-
-</style>
-
-
-
-<!--
     Template
 -->
 
@@ -29,35 +10,31 @@
 
     <div class="flex items-center">
 
-      <ui-action v-if="active" primary :icon="IconPause" />
-      <ui-action v-else primary :icon="IconPlay" />
+      <ui-action v-if="active" class="shrink-0" primary :icon="IconPause" @click="emit('pause')" />
+      <ui-action v-else primary class="shrink-0" :icon="IconPlay" @click="emit('play')" />
 
       <div class="ml-4 grow">
         <h2>{{ value.name }}</h2>
         <p class="text-sm text-gray">{{ value.description }}</p>
       </div>
 
-      <div class="shrink-0">
-        <Transition name="ui-recording" mode="out-in">
-          <ui-spinner v-if="db.loading" class="m-3 text-blue" />
-          <ui-action v-else-if="clearable" :icon="IconClear" @click="clear" />
+      <div class="shrink-0" :class="{ invisible: db.loading }">
+          <ui-action v-if="clearable" :icon="IconClear" @click="clear" />
           <ui-action v-else :icon="IconDownload" @click="loader.load(value)" />
-        </Transition>
       </div>
-
 
     </div>
 
 
     <!-- progress -->
 
-    <div class="mt-4" v-if="active">
+    <div class="pt-4" v-if="active">
 
-      <ui-progress :value="0.5" />
+      <ui-progress :value="progress" />
 
       <div class="flex justify-between mt-2 text-xs text-gray">
-        <span>01:01</span>
-        <span>45:12</span>
+        <span>{{ format(time) }}</span>
+        <span>{{ format(duration) }}</span>
       </div>
 
     </div>
@@ -65,7 +42,7 @@
 
     <!-- audio -->
 
-    <audio>
+    <audio ref="$audio" @loadedmetadata="setDuration" @timeupdate="setTime">
       <source :src="value.url">
     </audio>
 
@@ -80,7 +57,7 @@
 
 <script setup>
 
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch, onMounted } from 'vue'
   import { useDB } from '#src/utils/uses.js'
   import loader from '#src/utils/loader.js'
   import IconPlay from '#src/icons/play.svg'
@@ -89,7 +66,6 @@
   import IconClear from '#src/icons/clear.svg'
   import UiAction from '#src/ui/ui-action.vue'
   import UiProgress from '#src/ui/ui-progress.vue'
-  import UiSpinner from '#src/ui/ui-spinner.vue'
 
   const emit = defineEmits([
     'play',
@@ -101,12 +77,50 @@
     'active'
   ])
 
+
+
+  // -----------------
+  // Data
+  // -----------------
+
   const cache = ref(null);
   const db = useDB();
+  const duration = ref(0);
+  const time = ref(0);
+  const $audio = ref(null);
 
   const clearable = computed(() => {
     return cache.value || loader.has(props.value)
   })
+
+  const progress = computed(() => {
+    return time.value / duration.value;
+  })
+
+
+
+  // -----------------
+  // Helpers
+  // -----------------
+
+  function format (seconds) {
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  }
+
+
+  // -----------------
+  // Actions
+  // -----------------
+
+  function setDuration () {
+    duration.value = $audio.value.duration;
+  }
+
+  function setTime () {
+    time.value = $audio.value.currentTime;
+  }
 
   function clear () {
     if (!clearable.value) return;
@@ -115,19 +129,32 @@
   }
 
   function toggle () {
-    if (props.active) emit('pause');
-    else emit('play');
+    if (props.active) $audio.value.play();
+    else $audio.value.pause();
   }
+
+
+
+  // -----------------
+  // Listeners
+  // -----------------
 
   db.get(props.value.url).then(row => {
     cache.value = row;
   })
 
   loader.emitter.on('load', row => {
-    if (row.url === props.value.url) {
-      cache.value = row;
-    }
+    if (row.url === props.value.url) cache.value = row;
   })
+
+  onMounted(() => {
+    watch(() => props.active, toggle, { immediate: true })
+  })
+
+
+
+
+
 
 
 
