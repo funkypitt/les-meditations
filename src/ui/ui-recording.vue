@@ -44,7 +44,7 @@
 
     <!-- audio -->
 
-    <audio ref="$audio" @loadedmetadata="onMetadata" @timeupdate="onTime" @ended="emit('stop')">
+    <audio ref="$audio" @loadedmetadata="onMetadata" @timeupdate="onTime" @ended="emit('stop')" @error="onError">
       <source :src="url" />
     </audio>
 
@@ -62,6 +62,7 @@
 
   import { computed, ref, watch, onMounted } from 'vue'
   import db from '#src/utils/db.js'
+  import state from '#src/utils/state.js'
   import loader from '#src/utils/loader.js'
   import IconPlay from '#src/icons/play.svg'
   import IconPause from '#src/icons/pause.svg'
@@ -128,6 +129,10 @@
 
   function onTime () {
     time.value = $audio.value.currentTime;
+  }
+
+  function onError (e) {
+    state.error = e;
   }
 
 
