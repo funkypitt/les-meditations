@@ -5,8 +5,9 @@ import App from './index.vue';
 import routes from './config/routes.js'
 
 const router = createRouter({
+  routes,
   history: createWebHistory(),
-  routes
+  scrollBehavior: () => ({ top: 0 })
 });
 
 const app = createApp(App);
