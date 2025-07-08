@@ -1,5 +1,5 @@
 export default {
-    name: 'bodyscan',
+    name: 'Bodyscan',
     slug: 'bodyscan',
     bg: '#7689EA',
     description: 'Le bodyscan est une méditation pratiquée habituellement en position couchée, qui consiste à prendre conscience une par une des différentes parties du corps.',

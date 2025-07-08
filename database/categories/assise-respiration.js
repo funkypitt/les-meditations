@@ -1,5 +1,5 @@
 export default {
-    name: 'assise (respiration)',
+    name: 'Assise (respiration)',
     slug: 'assise-respiration',
     bg: '#79D5C7',
     description: 'La méditation assise centrée sur la respiration consiste à porter son attention sur les sensations de la respiration dans le corps, respiration après respiration.',

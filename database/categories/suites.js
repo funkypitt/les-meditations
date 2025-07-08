@@ -1,5 +1,5 @@
 export default {
-    name: 'suites',
+    name: 'Suites',
     slug: 'suites',
     bg: '#93E2F4',
     description: 'Ces \"suites méditatives\" sont simplement des enchaînements de méditations différentes qui totalisent plus d\'1h. Plus encore que pour les autres méditations, je vous recommande d\'utiliser le bouton rond à droite pour les télécharger avant écoute pour éviter toute interruption. Le risque de coupure de réseau durant la lecture est en effet plus grand pour un fichier audio plus gros.',

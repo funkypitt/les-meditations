@@ -1,5 +1,5 @@
 export default {
-    name: 'bienveillance',
+    name: 'Bienveillance',
     slug: 'bienveillance',
     bg: '#85D097',
     description: 'La méditation de bienveillance se pratique dans une position assise confortable | et consiste à répéter intérieurement une phrase exprimant une intention bienveillante en l\'adressant à soi-même et à d\'autres personnes. Elle est présentée dans le détail dans le cadre du cours. A chacun de choisir la phrase qui convient le mieux, à condition d\'utilliser la même pour les différentes personnes auxquelles vous penserez et pour vous-même.  Plusieurs phrases sont proposées dans le cadre des formations, l\'une des plus utilisées étant par exemple \"Je te souhaite d\'être heureux et  en bonne santé.\" Certains des exercices ci-dessous intègrent une phase guidée de choix de la phrase utilisée. Il y aussi des enregistrement courts dans la catégorie \"mini-assises\".',

@@ -1,21 +1,21 @@
 import bodyscan from './categories/bodyscan.js'
-import breathing from './categories/breathing.js'
-import kindness from './categories/kindness.js'
+import assiseRespiration from './categories/assise-respiration.js'
+import bienveillance from './categories/bienveillance.js'
 import meditations from './categories/meditations.js'
-import seated from './categories/seated.js'
+import assisePlusieursObjets from './categories/assise-plusieurs-objets.js'
 import silence from './categories/silence.js'
-import stretches from './categories/stretches.js'
+import etirements from './categories/etirements.js'
 import suites from './categories/suites.js'
-import talks from './categories/talks.js'
+import causeries from './categories/causeries.js'
 
 export default [
     bodyscan,
-    breathing,
-    stretches,
-    seated,
-    kindness,
+    assiseRespiration,
+    etirements,
+    assisePlusieursObjets,
+    bienveillance,
     silence,
     meditations,
-    talks,
+    causeries,
     suites
 ]
