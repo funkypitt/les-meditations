@@ -54,10 +54,7 @@
 
   const route = useRoute();
   const active = ref(-1);
-
-  const category = computed(() => {
-    return categories.find(category => category.slug === route.params.slug)
-  })
+  const category = route.meta.category;
 
   function onPlay (index) {
     active.value = index;
@@ -67,5 +64,24 @@
     active.value = -1;
   }
 
+
+</script>
+
+
+
+<!--
+    Options
+-->
+
+<script>
+
+  import categories from '#database/categories.js'
+
+  export default {
+    beforeRouteEnter(to) {
+      to.meta.category = categories.find(category => category.slug === to.params.slug);
+      if (!to.meta.category) return { name: 'home' }
+    }
+  }
 
 </script>
