@@ -12,7 +12,7 @@
           <p class="">1. Appuyez sur l'icône de partage<icon-share class="inline-block align-baseline h-4" />dans Safari.</p>
           <p class="">2. Sélectionnez "Ajouter à l'écran d'accueil".</p>
       </div>
-      <ui-button v-else class="mx-auto" text="Installer l'app sur votre smartphone" :disabled="!installPrompt"/>
+      <ui-button v-else class="mx-auto" text="Installer l'app sur votre smartphone" :disabled="!state.installPrompt" @click="install"/>
     </div>
 
     <router-link v-for="{ slug, name } in categories" class="tile" :to="{ name: 'category', params: { slug }}">
@@ -38,6 +38,7 @@
 <script setup>
 
   import { ref, onMounted, onUnmounted } from 'vue'
+  import state from '#src/utils/state.js'
   import LHeader from '#src/layout/l-header.vue'
   import LSection from '#src/layout/l-section.vue'
   import UiButton from '#src/ui/ui-button.vue'
@@ -46,16 +47,10 @@
 
   const isInstalled = ref(window.matchMedia('(display-mode: standalone)').matches);
   const isIos = ref(/iPad|iPhone|iPod/.test(navigator.userAgent));
-  const installPrompt = ref(null);
 
   async function install () {
-    await installPrompt.value.prompt();
-    installPrompt.value = null;
-  }
-
-  function beforeInstall (event) {
-    event.preventDefault();
-    installPrompt.value = event;
+    await state.installPrompt.prompt();
+    state.installPrompt = null;
   }
 
   function onInstall () {
@@ -63,12 +58,10 @@
   }
 
   onMounted(() => {
-    window.addEventListener('beforeinstallprompt', beforeInstall);
     window.addEventListener('appinstalled', onInstall);
   })
 
   onUnmounted(() => {
-    window.removeEventListener('beforeinstallprompt', beforeInstall);
     window.removeEventListener('appinstalled', onInstall);
   })
 

@@ -1,5 +1,12 @@
-import { reactive } from 'vue'
+import { shallowReactive } from 'vue'
 
-export default reactive({
-  error: null
+const state = shallowReactive({
+  error: null,
+  installPrompt: null
 })
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  state.installPrompt = event;
+});
+
+export default state;
