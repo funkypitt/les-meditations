@@ -1,6 +1,8 @@
 export default {
     name: 'assise (plusieurs objets)',
-    description: 'La méditation assise centrée sur plusieurs objets consiste à porter son attention, par phases successives, sur la respiration, les sensations dans le corps, les sons, les pensées et émotions, pour finir par une phase \"d\'attention ouverte\", sans objet de méditation spécifique.  <h3> remarque importante </h3> <p> Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit: 1) télécharger l\'enregistrement choisi à l\'aide du bouton à droite de celui-ci. 2) mettre votre appareil en mode avion 3) appuyer sur play! En cas de problème, les enregistrements sont aussi disponibles à l\'écoute et au téléchargement au format mp3 <a href=\"https://www.enpleineconscience.ch/meditations-guidees-mp3/\">sur mon site</a>.</p>',
+    slug: 'assise-plusieurs-objets',
+    bg: '#B197EE',
+    description: 'La méditation assise centrée sur plusieurs objets consiste à porter son attention, par phases successives, sur la respiration, les sensations dans le corps, les sons, les pensées et émotions, pour finir par une phase \"d\'attention ouverte\", sans objet de méditation spécifique.</p>',
     recordings: [
         {
             name: 'Assise (respiration puis attention ouverte), 44\'',

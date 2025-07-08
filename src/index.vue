@@ -1,11 +1,22 @@
+<!--
+    Template
+-->
+
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  <router-view />
+  <l-download />
+  <l-error />
 </template>
 
-<script>
-export default {
-  name: 'App'
-};
+
+
+<!--
+    Script
+-->
+
+<script setup>
+
+  import LDownload from '#src/layout/l-download.vue'
+  import LError from '#src/layout/l-error.vue'
+
 </script>

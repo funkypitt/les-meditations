@@ -1,14 +1,20 @@
-import Index from '#src/routes/index.vue';
+import Home from '#src/routes/home.vue';
 import Category from '#src/routes/category.vue';
+import Downloads from '#src/routes/downloads.vue';
 
 export default [
     {
         path: '/',
         name: 'home',
-        component: Index
+        component: Home
     },
     {
-        path: '/category/:category',
+        path: '/downloads',
+        name: 'downloads',
+        component: Downloads
+    },
+    {
+        path: '/category/:slug',
         name: 'category',
         component: Category
     }
