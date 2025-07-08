@@ -28,8 +28,12 @@ export default defineConfig({
       manifest: false,
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: true // enables in dev mode
-      }
+        enabled: true
+      },
+      includeAssets: [
+        'favicon.ico',
+        'logo.png',
+      ]
     })
   ]
 
