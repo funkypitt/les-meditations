@@ -1,4 +1,5 @@
 import { openDB } from 'idb'
+import state from './state.js'
 
 
 
@@ -23,6 +24,16 @@ const connection = openDB(DATABASE, VERSION, {
 });
 
 
+async function call (method, ...args) {
+  try {
+    const db = await connection;
+    return db[method](STORE, ...args);
+  }
+  catch (e) {
+    state.error = e;
+  }
+}
+
 
 // -----------------
 // Exports
@@ -30,24 +41,20 @@ const connection = openDB(DATABASE, VERSION, {
 
 export default {
 
-  async get (url) {
-    const db = await connection;
-    return db.get(STORE, url);
+  get (url) {
+    return call('get', url);
   },
 
-  async put (rec) {
-    const db = await connection;
-    return db.put(STORE, rec);
+  put (rec) {
+    return call('put', rec);
   },
 
-  async del (url) {
-    const db = await connection;
-    return db.delete(STORE, url);
+  del (url) {
+    return call('del', url);
   },
 
-  async list () {
-    const db = await connection;
-    return db.getAll(STORE);
+  list () {
+    return call('getAll');
   }
 
 }

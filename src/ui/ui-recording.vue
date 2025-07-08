@@ -71,7 +71,8 @@
 
   const emit = defineEmits([
     'play',
-    'pause'
+    'pause',
+    'delete'
   ])
 
   const props = defineProps([
@@ -128,6 +129,7 @@
     if (!clearable.value) return;
     if (cache.value) db.del(props.value.url);
     else loader.del(props.value);
+    emit('delete');
   }
 
   function toggle () {

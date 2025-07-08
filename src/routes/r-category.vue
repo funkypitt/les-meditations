@@ -4,7 +4,7 @@
 
 <template>
   <l-header :title="category.name" back="/" />
-  <l-section class="r-category">
+  <l-section>
 
 
     <!-- heading -->
@@ -45,9 +45,8 @@
 
 <script setup>
 
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import { useRoute } from 'vue-router'
-  import categories from '#database/categories.js'
   import LHeader from '#src/layout/l-header.vue'
   import LSection from '#src/layout/l-section.vue'
   import UiRecording from '#src/ui/ui-recording.vue'

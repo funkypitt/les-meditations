@@ -23,7 +23,7 @@
   <Transition>
     <aside class="l-download overlay bottom-0 h-(--h-download) py-4" v-if="loader.queue.length">
       <div class="wrapper flex flex-col">
-        <p>Downloading {{ loader.queue.length }} item(s)</p>
+        <p>Téléchargement de {{ loader.queue.length }} élément(s)</p>
         <p class="text-xs text-gray text-ellipsis overflow-hidden whitespace-nowrap">{{ loader.active?.url }}</p>
         <ui-progress class="mt-auto" :value="loader.progress" />
       </div>
