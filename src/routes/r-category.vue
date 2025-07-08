@@ -24,6 +24,9 @@
       </ol>
     </div>
 
+
+    <!-- recordings -->
+
     <div class="line" />
 
     <ui-recording
@@ -31,8 +34,9 @@
       :active="index === active"
       :value="recording"
       @play="onPlay(index)"
-      @pause="onPause()"
+      @stop="onStop()"
     />
+
 
   </l-section>
 </template>
@@ -45,24 +49,24 @@
 
 <script setup>
 
-  import { ref } from 'vue'
+  import { ref, reactive, onMounted, onUnmounted } from 'vue'
   import { useRoute } from 'vue-router'
+  import loader from '#src/utils/loader.js'
   import LHeader from '#src/layout/l-header.vue'
   import LSection from '#src/layout/l-section.vue'
   import UiRecording from '#src/ui/ui-recording.vue'
 
   const route = useRoute();
   const active = ref(-1);
-  const category = route.meta.category;
+  const category = reactive(route.meta.category);
 
   function onPlay (index) {
     active.value = index;
   }
 
-  function onPause () {
+  function onStop () {
     active.value = -1;
   }
-
 
 </script>
 
@@ -75,11 +79,24 @@
 <script>
 
   import categories from '#database/categories.js'
+  import db from '#src/utils/db.js'
 
   export default {
-    beforeRouteEnter(to) {
-      to.meta.category = categories.find(category => category.slug === to.params.slug);
-      if (!to.meta.category) return { name: 'home' }
+    async beforeRouteEnter(to) {
+
+      const category = categories.find(category => category.slug === to.params.slug);
+      if (!category) return { name: 'home' }
+
+      const requests = category.recordings.map(async rec => {
+        const clone = structuredClone(rec);
+        const cache = await db.get(rec.url);
+        if (cache) clone.blob = cache.blob;
+        return clone;
+      });
+
+      category.recordings = await Promise.all(requests);
+      to.meta.category = category;
+
     }
   }
 

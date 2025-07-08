@@ -15,7 +15,7 @@
         :active="index === active"
         :value="recording"
         @play="onPlay(index)"
-        @pause="onPause()"
+        @stop="onStop()"
         @delete="onDelete(index)"
       />
     </template>
@@ -53,12 +53,12 @@
   // -----------------
   // Handlers
   // -----------------
-  
+
   function onPlay (index) {
     active.value = index;
   }
 
-  function onPause () {
+  function onStop () {
     active.value = -1;
   }
 

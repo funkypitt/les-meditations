@@ -24,15 +24,24 @@ const connection = openDB(DATABASE, VERSION, {
 });
 
 
+
+// -----------------
+// Call db method
+// -----------------
+
 async function call (method, ...args) {
   try {
     const db = await connection;
-    return db[method](STORE, ...args);
+
+    // throw new Error('!')
+
+    return await db[method](STORE, ...args);
   }
   catch (e) {
     state.error = e;
   }
 }
+
 
 
 // -----------------
@@ -55,6 +64,10 @@ export default {
 
   list () {
     return call('getAll');
+  },
+
+  count () {
+    return call('count');
   }
 
 }

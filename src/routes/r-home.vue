@@ -57,7 +57,7 @@
   // -----------------
 
   const route = useRoute();
-  const downloads = ref(route.meta.downloads.length)
+  const downloads = ref(route.meta.downloads || 0)
   const isInstalled = ref(window.matchMedia('(display-mode: standalone)').matches);
   const isIos = ref(/iPad|iPhone|iPod/.test(navigator.userAgent));
 
@@ -118,7 +118,7 @@
 
   export default {
     async beforeRouteEnter (to) {
-      to.meta.downloads = await db.list();
+      to.meta.downloads = await db.count();
     }
   }
 

@@ -11,8 +11,8 @@
     <div class="flex items-center">
 
       <div class="shrink-0">
-        <ui-action v-if="active" primary :icon="IconPause" @click="emit('pause')" />
-        <ui-action v-else primary :icon="IconPlay" @click="emit('play')" />
+        <ui-action v-if="active" primary :icon="IconPause" @click="emit('stop')" />
+        <ui-action v-else primary :disabled="loading" :icon="IconPlay" @click="emit('play')" />
       </div>
 
       <div class="ml-4 grow">
@@ -44,8 +44,8 @@
 
     <!-- audio -->
 
-    <audio ref="$audio" @loadedmetadata="setDuration" @timeupdate="setTime">
-      <source :src="value.url">
+    <audio ref="$audio" @loadedmetadata="onMetadata" @canplay="onCanPlay" @timeupdate="onTime">
+      <source :src="url" />
     </audio>
 
 
@@ -71,7 +71,7 @@
 
   const emit = defineEmits([
     'play',
-    'pause',
+    'stop',
     'delete'
   ])
 
@@ -86,14 +86,16 @@
   // Data
   // -----------------
 
-  const cache = ref(null);
+  let watcher;
   const db = useDB();
   const duration = ref(0);
   const time = ref(0);
+  const loading = ref(true);
+  const url = getUrl();
   const $audio = ref(null);
 
   const clearable = computed(() => {
-    return cache.value || loader.has(props.value)
+    return props.value.blob || loader.has(props.value)
   })
 
   const progress = computed(() => {
@@ -112,29 +114,53 @@
     return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
   }
 
+  function getUrl () {
+    return props.value.blob ? URL.createObjectURL(props.value.blob) : props.value.url;
+  }
+
+
+
+  // -----------------
+  // Handlers
+  // -----------------
+
+  function onCanPlay () {
+    loading.value = false;
+    if (props.active) $audio.value.play();
+  }
+
+  function onMetadata () {
+    duration.value = $audio.value.duration;
+  }
+
+  function onTime () {
+    time.value = $audio.value.currentTime;
+  }
+
+
 
   // -----------------
   // Actions
   // -----------------
 
-  function setDuration () {
-    duration.value = $audio.value.duration;
-  }
-
-  function setTime () {
-    time.value = $audio.value.currentTime;
-  }
-
   function clear () {
-    if (!clearable.value) return;
-    if (cache.value) db.del(props.value.url);
-    else loader.del(props.value);
-    emit('delete');
+    // if (!clearable.value) return;
+    // if (cache.value) db.del(props.value.url);
+    // else loader.del(props.value);
+    // emit('delete');
   }
 
-  function toggle () {
-    if (props.active) $audio.value.play();
-    else $audio.value.pause();
+  function stop () {
+    if (loading.value) return;
+    $audio.value.pause();
+    $audio.value.currentTime = 0;
+  }
+
+  function play () {
+    const url = getUrl();
+    if (url === $audio.value.src) return $audio.value.play();
+    loading.value = true;
+    $audio.value.src = url;
   }
 
 
@@ -143,23 +169,8 @@
   // Listeners
   // -----------------
 
-  db.get(props.value.url).then(row => {
-    cache.value = row;
-  })
-
-  loader.emitter.on('load', row => {
-    if (row.url === props.value.url) cache.value = row;
-  })
-
   onMounted(() => {
-    watch(() => props.active, toggle, { immediate: true })
+    watch(() => props.active, value => value ? play() : stop(), { immediate: true })
   })
-
-
-
-
-
-
-
 
 </script>
