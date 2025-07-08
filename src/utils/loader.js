@@ -40,7 +40,7 @@ async function download () {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch ${active.value.name}: ${response.status}`);
+      throw new Error(`Échec de récupération ${active.value.name}: ${response.status}`);
     }
 
     const total = parseInt(response.headers.get('Content-Length'));
@@ -61,7 +61,9 @@ async function download () {
       blob: new Blob(chunks)
     }
 
-    await db.put(row);
+    const success = await db.put(row);
+    if (!success) throw state.error;
+
     emitter.emit('load', row);
     active.value = null;
     queue.shift();

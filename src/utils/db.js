@@ -32,9 +32,6 @@ const connection = openDB(DATABASE, VERSION, {
 async function call (method, ...args) {
   try {
     const db = await connection;
-
-    // throw new Error('!')
-
     return await db[method](STORE, ...args);
   }
   catch (e) {
