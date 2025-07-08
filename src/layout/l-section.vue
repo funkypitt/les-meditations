@@ -13,7 +13,7 @@
 -->
 
 <template>
-  <section class="l-main wrapper py-8 mt-(--h-header)" :class="{ 'mb-(--h-download)': loader.queue.length }">
+  <section class="l-main wrapper py-8 mt-(--h-header) mb-(--h-download)">
     <slot />
   </section>
 </template>
