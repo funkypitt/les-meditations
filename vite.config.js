@@ -31,8 +31,8 @@ export default defineConfig({
         enabled: true
       },
       includeAssets: [
-        'favicon.ico',
-        'logo.png',
+        '/favicon.ico',
+        '/logo.png',
       ]
     })
   ]
