@@ -1,4 +1,23 @@
 <!--
+    Styles
+-->
+
+<style>
+
+  .ui-recording-enter-active,
+  .ui-recording-leave-active {
+    transition: opacity 0.2s ease;
+  }
+  .ui-recording-enter-from,
+  .ui-recording-leave-to {
+    opacity: 0;
+  }
+
+</style>
+
+
+
+<!--
     Template
 -->
 
@@ -19,10 +38,13 @@
       </div>
 
       <div class="shrink-0">
-        <ui-spinner class="m-3 text-blue" v-if="db.loading" />
-        <ui-action v-else-if="clearable" :icon="IconClear" @click="clear" />
-        <ui-action v-else :icon="IconDownload" @click="loader.load(value)" />
+        <Transition name="ui-recording" mode="out-in">
+          <ui-spinner v-if="db.loading" class="m-3 text-blue" />
+          <ui-action v-else-if="clearable" :icon="IconClear" @click="clear" />
+          <ui-action v-else :icon="IconDownload" @click="loader.load(value)" />
+        </Transition>
       </div>
+
 
     </div>
 
@@ -59,7 +81,7 @@
 <script setup>
 
   import { computed, ref } from 'vue'
-  import db from '#src/utils/db.js'
+  import { useDB } from '#src/utils/uses.js'
   import loader from '#src/utils/loader.js'
   import IconPlay from '#src/icons/play.svg'
   import IconPause from '#src/icons/pause.svg'
@@ -80,7 +102,7 @@
   ])
 
   const cache = ref(null);
-
+  const db = useDB();
 
   const clearable = computed(() => {
     return cache.value || loader.has(props.value)
