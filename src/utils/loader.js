@@ -58,7 +58,7 @@ async function download () {
 
     const row = {
       ...active.value,
-      blob: new Blob(chunks)
+      blob: new Blob(chunks, { type: 'audio/mpeg' })
     }
 
     const success = await db.put(row);
