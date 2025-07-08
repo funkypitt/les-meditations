@@ -7,6 +7,7 @@ const state = shallowReactive({
 
 window.addEventListener('beforeinstallprompt', (event) => {
   state.installPrompt = event;
+  event.preventDefault();
 });
 
 export default state;
