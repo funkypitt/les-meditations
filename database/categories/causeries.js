@@ -2,7 +2,12 @@ export default {
     name: 'Causeries',
     slug: 'causeries',
     bg: '#73ACE1',
-    description: 'Quelques extraits des causeries données durant des retraites ou d\'autres formations réservées à mes participants. <p>Vous trouverez aussi des causeries dans mon podcast, dans un format plus adapté aux longues causeries:</p> <a href=\"https://www.enpleineconscience.ch/?feed=podcast\">Podcast (lien universel RSS)</a><br><a href=\"https://itunes.apple.com/ch/podcast/les-causeries-denpleineconscience-ch/id1457167644?l=fr\">Podcast (iTunes)</a>',
+    description: `
+        <p>Quelques extraits des causeries données durant des retraites ou d'autres formations réservées à mes participants.</p>
+        <p>Vous trouverez aussi des causeries dans mon podcast, dans un format plus adapté aux longues causeries:</p> 
+        <a href="https://www.enpleineconscience.ch/?feed=podcast">Podcast (lien universel RSS)</a><br>
+        <a href="https://itunes.apple.com/ch/podcast/les-causeries-denpleineconscience-ch/id1457167644?l=fr">Podcast (iTunes)</a>
+    `,
     recordings: [
         {
             name: '\"Tout passe\", 8\'',

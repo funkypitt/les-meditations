@@ -10,7 +10,7 @@
       <img v-else class="h-12 w-12" src="/logo.png">
 
       <div class="ml-2">
-        <h1 class="text-lg">{{ title }}</h1>
+        <h1 class="text-lg font-normal">{{ title }}</h1>
         <p class="text-sm text-gray" v-if="note">{{ note }}</p>
       </div>
 

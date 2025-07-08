@@ -2,7 +2,7 @@ export default {
     name: 'Assise (plusieurs objets)',
     slug: 'assise-plusieurs-objets',
     bg: '#B197EE',
-    description: 'La méditation assise centrée sur plusieurs objets consiste à porter son attention, par phases successives, sur la respiration, les sensations dans le corps, les sons, les pensées et émotions, pour finir par une phase \"d\'attention ouverte\", sans objet de méditation spécifique.</p>',
+    description: 'La méditation assise centrée sur plusieurs objets consiste à porter son attention, par phases successives, sur la respiration, les sensations dans le corps, les sons, les pensées et émotions, pour finir par une phase \"d\'attention ouverte\", sans objet de méditation spécifique.',
     recordings: [
         {
             name: 'Assise (respiration puis attention ouverte), 44\'',

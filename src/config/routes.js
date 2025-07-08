@@ -1,6 +1,6 @@
-import Home from '#src/routes/home.vue';
-import Category from '#src/routes/category.vue';
-import Downloads from '#src/routes/downloads.vue';
+import Home from '#src/routes/r-home.vue';
+import Category from '#src/routes/r-category.vue';
+import Downloads from '#src/routes/r-downloads.vue';
 
 export default [
     {
