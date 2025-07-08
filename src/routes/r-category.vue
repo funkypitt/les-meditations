@@ -1,32 +1,4 @@
 <!--
-    Styles
--->
-
-<style>
-
-  @reference "#src/index.css";
-
-  .r-category_html p {
-    @apply my-2;
-  }
-  .r-category_html a {
-    @apply text-blue hover:underline;
-  }
-  .r-category_html ol {
-    @apply list-decimal ml-6 my-2;
-  }
-  .r-category_html > *:first-child {
-    @apply mt-0;
-  }
-  .r-category_html > *:last-child {
-    @apply mb-0;
-  }
-
-</style>
-
-
-
-<!--
     Template
 -->
 
@@ -38,12 +10,12 @@
     <!-- heading -->
 
     <h1 class="text-2xl font-normal mb-4">{{ category.name }}</h1>
-    <div class="r-category_html mb-8" v-html="category.description" />
+    <div class="html mb-8" v-html="category.description" />
 
 
     <!-- information -->
 
-    <div class="r-category_html mb-8 tile bg-blue-200">
+    <div class="html mb-8 tile bg-blue-200">
       <p class="font-medium">Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit:</p>
       <ol>
         <li>Télécharger l'enregistrement choisi à l'aide du bouton à droite de celui-ci.</li>
