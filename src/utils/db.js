@@ -59,7 +59,7 @@ export default {
   },
 
   del (url) {
-    return call('del', url);
+    return call('delete', url);
   },
 
   list () {

@@ -35,6 +35,7 @@
       :value="recording"
       @play="onPlay(index)"
       @stop="onStop()"
+      @clear="onClear(index)"
     />
 
 
@@ -67,6 +68,23 @@
   function onStop () {
     active.value = -1;
   }
+
+  function onLoad (row) {
+    const rec = category.recordings.find(rec => rec.url === row.url);
+    if (rec) rec.blob = row.blob;
+  }
+
+  function onClear (index) {
+    delete category.recordings[index].blob;
+  }
+
+  onMounted(() => {
+    loader.emitter.on('load', onLoad);
+  })
+
+  onUnmounted(() => {
+    loader.emitter.off('load', onLoad);
+  })
 
 </script>
 

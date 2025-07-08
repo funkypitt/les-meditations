@@ -16,7 +16,7 @@
         :value="recording"
         @play="onPlay(index)"
         @stop="onStop()"
-        @delete="onDelete(index)"
+        @clear="onClear(index)"
       />
     </template>
 
@@ -62,7 +62,7 @@
     active.value = -1;
   }
 
-  function onDelete (index) {
+  function onClear (index) {
     recordings.splice(index, 1);
     if (index === active.value) active.value = -1;
   }

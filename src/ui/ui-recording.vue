@@ -12,7 +12,7 @@
 
       <div class="shrink-0">
         <ui-action v-if="active" primary :icon="IconPause" @click="emit('stop')" />
-        <ui-action v-else primary :disabled="loading" :icon="IconPlay" @click="emit('play')" />
+        <ui-action v-else primary :icon="IconPlay" @click="emit('play')" />
       </div>
 
       <div class="ml-4 grow">
@@ -44,13 +44,14 @@
 
     <!-- audio -->
 
-    <audio ref="$audio" @loadedmetadata="onMetadata" @canplay="onCanPlay" @timeupdate="onTime">
+    <audio ref="$audio" @loadedmetadata="onMetadata" @timeupdate="onTime" @ended="emit('stop')">
       <source :src="url" />
     </audio>
 
 
   </div>
 </template>
+
 
 
 <!--
@@ -60,7 +61,7 @@
 <script setup>
 
   import { computed, ref, watch, onMounted } from 'vue'
-  import { useDB } from '#src/utils/uses.js'
+  import db from '#src/utils/db.js'
   import loader from '#src/utils/loader.js'
   import IconPlay from '#src/icons/play.svg'
   import IconPause from '#src/icons/pause.svg'
@@ -72,7 +73,7 @@
   const emit = defineEmits([
     'play',
     'stop',
-    'delete'
+    'clear'
   ])
 
   const props = defineProps([
@@ -86,11 +87,8 @@
   // Data
   // -----------------
 
-  let watcher;
-  const db = useDB();
   const duration = ref(0);
   const time = ref(0);
-  const loading = ref(true);
   const url = getUrl();
   const $audio = ref(null);
 
@@ -124,11 +122,6 @@
   // Handlers
   // -----------------
 
-  function onCanPlay () {
-    loading.value = false;
-    if (props.active) $audio.value.play();
-  }
-
   function onMetadata () {
     duration.value = $audio.value.duration;
   }
@@ -144,23 +137,20 @@
   // -----------------
 
   function clear () {
-    // if (!clearable.value) return;
-    // if (cache.value) db.del(props.value.url);
-    // else loader.del(props.value);
-    // emit('delete');
+    if (!clearable.value) return;
+    if (props.value.blob) db.del(props.value.url);
+    else loader.del(props.value);
+    emit('clear');
   }
 
   function stop () {
-    if (loading.value) return;
     $audio.value.pause();
     $audio.value.currentTime = 0;
   }
 
   function play () {
-    const url = getUrl();
-    if (url === $audio.value.src) return $audio.value.play();
-    loading.value = true;
-    $audio.value.src = url;
+    $audio.value.src = getUrl();
+    $audio.value.play();
   }
 
 
@@ -172,5 +162,7 @@
   onMounted(() => {
     watch(() => props.active, value => value ? play() : stop(), { immediate: true })
   })
+
+
 
 </script>
