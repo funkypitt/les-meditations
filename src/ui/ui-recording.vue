@@ -97,8 +97,14 @@
     else emit('play');
   }
 
-  db.get(props.value.url).then(data => {
-    cache.value = data;
+  db.get(props.value.url).then(row => {
+    cache.value = row;
+  })
+
+  loader.emitter.on('load', row => {
+    if (row.url === props.value.url) {
+      cache.value = row;
+    }
   })
 
 

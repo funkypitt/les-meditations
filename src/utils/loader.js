@@ -1,4 +1,4 @@
-import { reactive, shallowReactive, computed } from 'vue'
+import { reactive, markRaw, ref } from 'vue'
 import mitt from 'mitt';
 import db from './db.js'
 import state from './state.js'
@@ -9,17 +9,14 @@ import state from './state.js'
 // Data
 // -----------------
 
-const loader = shallowReactive({
-  active: null,
-  controller: null,
-  queue: reactive([])
-})
+let controller;
+const emitter = mitt();
+const active = ref(null);
+const progress = ref(0);
+const queue = reactive([]);
 
-export const pending = computed(() => {
-  return loader.queue.length;
-})
 
-export const emitter = mitt();
+
 
 
 
@@ -31,19 +28,19 @@ async function download () {
 
   try {
 
-    if (loader.active) return;
-    if (!loader.queue.length) return;
+    if (active.value) return;
+    if (!queue.length) return;
 
-    loader.active = loader.queue[0];
-    loader.progress = 0;
-    loader.controller = new AbortController();
+    active.value = queue[0];
+    progress.value = 0;
+    controller = new AbortController();
 
-    const response = await fetch(loader.active.url, {
-      signal: loader.controller.signal
+    const response = await fetch(active.value.url, {
+      signal: controller.signal
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch ${loader.active.name}: ${response.status}`);
+      throw new Error(`Failed to fetch ${active.value.name}: ${response.status}`);
     }
 
     const total = parseInt(response.headers.get('Content-Length'));
@@ -56,26 +53,29 @@ async function download () {
       if (done) break;
       chunks.push(value);
       received += value.length;
-      loader.progress = received / total;
+      progress.value = received / total;
     }
 
-    await db.put({
-      ...loader.active,
+    const row = {
+      ...active.value,
       blob: new Blob(chunks)
-    })
+    }
 
-    emitter.emit('load', loader.active);
-    loader.active = null;
-    loader.queue.shift();
+    await db.put(row);
+    emitter.emit('load', row);
+    active.value = null;
+    queue.shift();
 
     download();
 
   }
 
   catch (e) {
-    loader.active = null;
-    loader.queue = reactive([]);
-    state.error = e;
+    active.value = null;
+    if (e.name !== 'AbortError') {
+      queue.length = 0;
+      state.error = e;
+    }
   }
 
 }
@@ -86,24 +86,29 @@ async function download () {
 // Exports
 // -----------------
 
-export default {
+export default reactive({
+
+  active,
+  progress,
+  queue,
+  emitter: markRaw(emitter),
 
   has (rec) {
-    return loader.queue.includes(rec);
+    return queue.includes(rec);
   },
 
   del (rec) {
-    const index = loader.queue.indexOf(rec);
+    const index = queue.indexOf(rec);
     if (index === -1) return;
-    if (loader.active === rec) loader.controller.abort();
-    loader.queue.splice(index);
-    download(); // timeout?
+    if (active.value.url === rec.url) controller?.abort();
+    queue.splice(index, 1);
+    setTimeout(download);
   },
 
   load (rec) {
     if (this.has(rec)) return;
-    loader.queue.push(rec);
+    queue.push(rec);
     download();
   }
 
-}
+})

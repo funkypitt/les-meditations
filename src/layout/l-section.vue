@@ -13,7 +13,7 @@
 -->
 
 <template>
-  <section class="l-main wrapper py-8 mt-(--h-header)" :class="{ 'mb-(--h-download)': pending }">
+  <section class="l-main wrapper py-8 mt-(--h-header)" :class="{ 'mb-(--h-download)': loader.queue.length }">
     <slot />
   </section>
 </template>
@@ -26,6 +26,6 @@
 
 <script setup>
 
-  import { pending } from '#src/utils/loader.js'
+  import loader from '#src/utils/loader.js'
 
 </script>

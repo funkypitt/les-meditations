@@ -3,11 +3,11 @@
 -->
 
 <template>
-  <aside class="l-download overlay bottom-0 h-(--h-download) py-4" v-if="pending">
+  <aside class="l-download overlay bottom-0 h-(--h-download) py-4" v-if="loader.queue.length">
     <div class="wrapper flex flex-col">
-      <p>Downloading {{ 1 }} item(s)</p>
-      <p class="text-xs text-gray">80%</p>
-      <ui-progress class="mt-auto" :value="0.3" />
+      <p>Downloading {{ loader.queue.length }} item(s)</p>
+      <p class="text-xs text-gray">{{ loader.active?.url }}</p>
+      <ui-progress class="mt-auto" :value="loader.progress" />
     </div>
   </aside>
 </template>
@@ -19,10 +19,9 @@
 
 <script setup>
 
- import { ref, watch } from 'vue'
- import { pending, default as loader } from '#src/utils/loader.js'
- import UiProgress from '#src/ui/ui-progress.vue'
-
+  import { computed } from 'vue'
+  import loader from '#src/utils/loader.js'
+  import UiProgress from '#src/ui/ui-progress.vue'
 
 
 
