@@ -1,5 +1,5 @@
 export default {
-  name: 'Bodyscan',
+  name: 'Bodyscan 2',
   slug: 'bodyscan',
   description: 'Le bodyscan est une méditation pratiquée habituellement en position couchée, qui consiste à prendre conscience une par une des différentes parties du corps.',
   recordings: [
@@ -30,6 +30,11 @@ export default {
     },
     {
       name: 'bodyscan, 15\' (12/15)',
+      description: '',
+      url: 'https://www.enpleineconscience.ch/fichiers/2015-12-16-mini_bodyscan.mp3'
+    },
+    {
+      name: 'test',
       description: '',
       url: 'https://www.enpleineconscience.ch/fichiers/2015-12-16-mini_bodyscan.mp3'
     }
