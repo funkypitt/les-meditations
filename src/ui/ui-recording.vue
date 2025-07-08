@@ -131,8 +131,16 @@
     time.value = $audio.value.currentTime;
   }
 
-  function onError (e) {
-    state.error = e;
+  function onError () {
+    const messages = {
+      1: 'MEDIA_ERR_ABORTED',
+      2: 'MEDIA_ERR_NETWORK',
+      3: 'MEDIA_ERR_DECODE',
+      4: 'MEDIA_ERR_SRC_NOT_SUPPORTED'
+    };
+    const error = $audio.value.error;
+    const message = messages[error.code] || 'Erreur audio inconnue'
+    state.error = new Error(message);
   }
 
 
