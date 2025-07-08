@@ -10,15 +10,17 @@
 
     <div class="flex items-center">
 
-      <ui-action v-if="active" class="shrink-0" primary :icon="IconPause" @click="emit('pause')" />
-      <ui-action v-else primary class="shrink-0" :icon="IconPlay" @click="emit('play')" />
+      <div class="shrink-0">
+        <ui-action v-if="active" primary :icon="IconPause" @click="emit('pause')" />
+        <ui-action v-else primary :icon="IconPlay" @click="emit('play')" />
+      </div>
 
       <div class="ml-4 grow">
         <h2>{{ value.name }}</h2>
         <p class="text-sm text-gray">{{ value.description }}</p>
       </div>
 
-      <div class="shrink-0" :class="{ invisible: db.loading }">
+      <div class="shrink-0 -mr-2" :class="{ invisible: db.loading }">
           <ui-action v-if="clearable" :icon="IconClear" @click="clear" />
           <ui-action v-else :icon="IconDownload" @click="loader.load(value)" />
       </div>
