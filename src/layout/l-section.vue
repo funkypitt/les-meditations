@@ -1,14 +1,4 @@
 <!--
-    Styles
--->
-
-<style>
-
-</style>
-
-
-
-<!--
     Template
 -->
 
@@ -25,7 +15,5 @@
 -->
 
 <script setup>
-
-  import loader from '#src/utils/loader.js'
 
 </script>

@@ -2,18 +2,6 @@
     Template
 -->
 
-<style>
-
-
-
-</style>
-
-
-
-<!--
-    Template
--->
-
 <template>
   <div class="ui-progress h-1 bg-slate-200">
     <div class="h-full bg-blue" :style="{ width }" />

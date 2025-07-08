@@ -9,13 +9,13 @@ import suites from './categories/suites.js'
 import causeries from './categories/causeries.js'
 
 export default [
-    bodyscan,
-    assiseRespiration,
-    etirements,
-    assisePlusieursObjets,
-    bienveillance,
-    silence,
-    meditations,
-    causeries,
-    suites
+  bodyscan,
+  assiseRespiration,
+  etirements,
+  assisePlusieursObjets,
+  bienveillance,
+  silence,
+  meditations,
+  causeries,
+  suites
 ]

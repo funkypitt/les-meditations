@@ -1,19 +1,9 @@
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import svg from 'vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-
-
-
-
-
-// -----------------
-// Vite
-// -----------------
-
-export default defineConfig({
+export default {
 
   server: {
     host: '0.0.0.0',
@@ -37,4 +27,4 @@ export default defineConfig({
     })
   ]
 
-});
+}

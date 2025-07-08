@@ -6,6 +6,8 @@
   <l-header title="Méditations guidées" note="d'enpleineconscience.ch" />
   <l-section>
 
+    <!-- install -->
+
     <div v-if="!isInstalled">
       <div v-if="isIos" class="html tile bg-blue-200">
           <p class="font-medium">Pour installer cette application sur iOS :</p>
@@ -18,16 +20,23 @@
       <div class="line" />
     </div>
 
+
+    <!-- categories -->
+
     <router-link v-for="{ slug, name } in categories" class="tile" :to="{ name: 'category', params: { slug }}">
       <p class="text-lg text-blue">{{ name }}</p>
     </router-link>
 
     <div class="line" />
 
+
+    <!-- downloads -->
+
     <router-link class="tile" :to="{ name: 'downloads' }">
       <p class="text-lg text-blue">Téléchargements</p>
       <p class="text-sm text-gray">{{ downloads }} enregistrements</p>
     </router-link>
+
 
   </l-section>
 </template>
