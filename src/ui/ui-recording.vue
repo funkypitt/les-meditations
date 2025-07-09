@@ -124,11 +124,11 @@
   // -----------------
 
   function onMetadata () {
-    duration.value = $audio.value.duration;
+    duration.value = $audio.value?.duration || 0;
   }
 
   function onTime () {
-    time.value = $audio.value.currentTime;
+    time.value = $audio.value?.currentTime || 0;
   }
 
   function onError () {
