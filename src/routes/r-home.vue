@@ -23,8 +23,8 @@
 
     <!-- categories -->
 
-    <router-link v-for="{ slug, name } in categories" class="tile" :to="{ name: 'category', params: { slug }}">
-      <p class="text-lg text-blue">{{ name }}</p>
+    <router-link v-for="{ slug, name, color } in categories" class="tile" :to="{ name: 'category', params: { slug }}" :style="{ backgroundColor: color }">
+      <p class="text-lg font-normal text-white text-shadow-md">{{ name }}</p>
     </router-link>
 
     <div class="line" />
