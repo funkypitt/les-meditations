@@ -1,6 +1,7 @@
 export default {
   name: 'Causeries',
   slug: 'causeries',
+  color: '#77B2E8',
   description: `
         <p>Quelques extraits des causeries données durant des retraites ou d'autres formations réservées à mes participants.</p>
         <p>Vous trouverez aussi des causeries dans mon podcast, dans un format plus adapté aux longues causeries:</p> 

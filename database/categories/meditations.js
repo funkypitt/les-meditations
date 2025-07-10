@@ -1,6 +1,7 @@
 export default {
   name: 'Mini-méditations 10+',
   slug: 'mini-meditations',
+  color: '#E78DB2',
   description: 'Ces méditations courtes concernent souvent des situations spécifiques abordées durant les formations et  s\'adressent en priorité à des personnes ayant appris à utiliser ces techniques au préalable.',
   recordings: [
     {
