@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="ui-recording tile" @click="test">
+  <div class="ui-recording tile mb-4">
 
 
     <!-- main -->

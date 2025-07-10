@@ -1,5 +1,6 @@
 @import "tailwindcss";
-
+@source inline("{bg-{red,amber,lime,emerald,cyan,blue,violet,fuchsia,pink}-100}");
+@source inline("{text-{red,amber,lime,emerald,cyan,blue,violet,fuchsia,pink}-900}");
 
 
 /*
@@ -33,6 +34,15 @@
 
   --color-blue: var(--color-blue-600);
   --color-gray: var(--color-slate-600);
+
+  --text-shadow-outline: -1px -1px 0 white,
+                          0   -1px 0 white,
+                          1px -1px 0 white,
+                          1px  0   0 white,
+                          1px  1px 0 white,
+                          0    1px 0 white,
+                         -1px  1px 0 white,
+                         -1px  0   0 white
   
 }
 
@@ -76,7 +86,7 @@
 
   .tile {
     box-shadow: 0 3px 6px rgba(0,0,0,.1);
-    @apply block bg-white p-4 mb-4 rounded-sm last:mb-0;
+    @apply block bg-white p-4 rounded-sm last:!mb-0;
   }
 
 

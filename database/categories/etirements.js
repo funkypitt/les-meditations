@@ -1,7 +1,7 @@
 export default {
   name: 'Étirements',
   slug: 'etirements',
-  color: '#E78DB2',
+  color: 'cyan',
   description: 'Ces étirements inspirés du yoga se pratiquent comme une \"méditation en mouvement\", les yeux fermés quand c\'est possible, l\'attention focalisée sur les sensations dans le corps et la respiration. Les participants au cours ont accès à des illustrations explicatives. Seuls les mouvements qui vous conviennent doivent être pratiqués, et la supervision d\'un formateur est prescrite avant une première utilisation.',
   recordings: [
     {

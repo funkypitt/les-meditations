@@ -1,7 +1,7 @@
 export default {
   name: 'Silence',
   slug: 'silence',
-  color: '#B197EE',
+  color: 'pink',
   description: 'Cet enregistrement de silence avec des sons de bol permet de méditer sans instructions. 1 \"ding\" après 10 minutes, 2 après 20, 3 après 30, etc. jusqu\'à 6 coups pour 60 minutes.',
   recordings: [
     {

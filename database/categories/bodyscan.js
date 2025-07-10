@@ -1,7 +1,7 @@
 export default {
   name: 'Bodyscan',
   slug: 'bodyscan',
-  color: '#7689EA',
+  color: 'red',
   description: 'Le bodyscan est une méditation pratiquée habituellement en position couchée, qui consiste à prendre conscience une par une des différentes parties du corps.',
   recordings: [
     {

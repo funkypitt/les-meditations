@@ -9,7 +9,7 @@
     <!-- install -->
 
     <div v-if="!isInstalled">
-      <div v-if="isIos" class="html tile bg-blue-200">
+      <div v-if="isIos" class="html tile bg-blue-100 shadow-none">
           <p class="font-medium">Pour installer cette application sur iOS :</p>
           <ol>
             <li>Appuyez sur l'icône de partage<icon-share class="inline-block align-baseline h-4" />dans Safari.</li>
@@ -23,9 +23,13 @@
 
     <!-- categories -->
 
-    <router-link v-for="{ slug, name, color } in categories" class="tile" :to="{ name: 'category', params: { slug }}" :style="{ backgroundColor: color }">
-      <p class="text-lg font-normal text-white text-shadow-md">{{ name }}</p>
-    </router-link>
+    <div class="grid max-sm:grid-cols-2 sm:grid-cols-3 gap-2">
+      <router-link v-for="{ slug, name, color } in categories" class="aspect-2/1 tile border-6 border-white text-shadow-outline" :to="{ name: 'category', params: { slug }}" :class="[`bg-${color}-100`, `text-${color}-900`]">
+        <p class="font-normal text-blur">{{ name }}</p>
+      </router-link>
+    </div>
+
+
 
     <div class="line" />
 

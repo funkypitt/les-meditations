@@ -15,7 +15,7 @@
 
     <!-- information -->
 
-    <div class="html mb-8 tile bg-blue-200">
+    <div class="html mb-8 tile bg-blue-100 shadow-none">
       <p class="font-medium">Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit:</p>
       <ol>
         <li>Télécharger l'enregistrement choisi à l'aide du bouton à droite de celui-ci.</li>
