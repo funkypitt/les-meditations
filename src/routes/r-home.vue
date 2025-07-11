@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <l-header title="Méditations guidées" note="d'enpleineconscience.ch" />
+  <l-header title="Méditations guidées 1" note="d'enpleineconscience.ch" />
   <l-section>
 
     <!-- install -->
