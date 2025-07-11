@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="ui-recording tile mb-4">
+  <div class="ui-recording tile mb-4 last:mb-0">
 
 
     <!-- main -->
