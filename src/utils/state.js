@@ -2,6 +2,7 @@ import { shallowReactive } from 'vue'
 
 const state = shallowReactive({
   error: null,
+  theme: 'blue',
   installPrompt: null
 })
 

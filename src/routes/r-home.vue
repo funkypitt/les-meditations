@@ -23,11 +23,11 @@
 
     <!-- categories -->
 
-    <div class="grid max-sm:grid-cols-2 sm:grid-cols-3 gap-2">
-      <router-link v-for="{ slug, name, color } in categories" class="aspect-2/1 tile border-6 border-white text-shadow-outline" :to="{ name: 'category', params: { slug }}" :class="[`bg-${color}-100`, `text-${color}-900`]">
-        <p class="font-normal text-blur">{{ name }}</p>
+    <article class="grid max-sm:grid-cols-2 sm:grid-cols-3 gap-4 auto-rows-[1fr]">
+      <router-link v-for="{ slug, name, color } in categories" class="tile" :to="{ name: 'category', params: { slug }}" :class="[`bg-${color}-400`]">
+        <h2 class="font-normal text-white text-shadow-md text-lg">{{ name }}</h2>
       </router-link>
-    </div>
+    </article>
 
 
 
