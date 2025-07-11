@@ -1,6 +1,8 @@
 @import "tailwindcss";
-@source inline("{bg-{red,amber,lime,emerald,cyan,blue,violet,fuchsia,pink}-100}");
-@source inline("{text-{red,amber,lime,emerald,cyan,blue,violet,fuchsia,pink}-900}");
+@import "./tailwind-colors.css";
+
+
+
 
 
 /*
@@ -121,5 +123,4 @@
 
 
 }
-
 
