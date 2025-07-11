@@ -23,7 +23,7 @@
         <p class="text-sm">Accédez plus rapidement, profitez de meilleures performances et utilisez-la hors ligne.</p>
         <ui-button class="mx-auto" text="Installer" :disabled="!state.installPrompt" @click="install"/>
       </div>
-      
+
       <div class="line" />
 
     </div>
