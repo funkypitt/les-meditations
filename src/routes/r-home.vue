@@ -9,15 +9,23 @@
     <!-- install -->
 
     <div v-if="!isInstalled">
-      <div v-if="isIos" class="html tile bg-theme-100 shadow-none">
+
+      <div v-if="isIos" class="html alert">
           <p class="font-medium">Pour installer cette application sur iOS :</p>
           <ol>
             <li>Appuyez sur l'icône de partage<icon-share class="inline-block align-baseline h-4" />dans Safari.</li>
             <li>Sélectionnez "Ajouter à l'écran d'accueil".</li>
           </ol>
       </div>
-      <ui-button v-else class="mx-auto" text="Installer l'app sur votre smartphone" :disabled="!state.installPrompt" @click="install"/>
+
+      <div v-else class="html alert text-center">
+        <p class="font-medium">Installez notre application</p>
+        <p class="text-sm">Accédez plus rapidement, profitez de meilleures performances et utilisez-la hors ligne.</p>
+        <ui-button class="mx-auto" text="Installer" :disabled="!state.installPrompt" @click="install"/>
+      </div>
+      
       <div class="line" />
+
     </div>
 
 

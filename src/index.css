@@ -82,6 +82,10 @@
     @apply block bg-white p-4 rounded-sm;
   }
 
+  .alert {
+    @apply bg-theme-100 p-4 rounded-sm;
+  }
+
 
   /* overlay */
 
