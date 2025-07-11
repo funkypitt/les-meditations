@@ -9,7 +9,7 @@
     <!-- install -->
 
     <div v-if="!isInstalled">
-      <div v-if="isIos" class="html tile bg-blue-100 shadow-none">
+      <div v-if="isIos" class="html tile bg-theme-100 shadow-none">
           <p class="font-medium">Pour installer cette application sur iOS :</p>
           <ol>
             <li>Appuyez sur l'icône de partage<icon-share class="inline-block align-baseline h-4" />dans Safari.</li>
@@ -37,7 +37,7 @@
     <!-- downloads -->
 
     <router-link class="tile" :to="{ name: 'downloads' }">
-      <p class="text-lg text-blue">Téléchargements</p>
+      <p class="text-lg text-theme">Téléchargements</p>
       <p class="text-sm text-gray">{{ downloads }} enregistrements</p>
     </router-link>
 

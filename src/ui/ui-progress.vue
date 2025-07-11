@@ -4,7 +4,7 @@
 
 <template>
   <div class="ui-progress h-1 bg-slate-200">
-    <div class="h-full bg-blue" :style="{ width }" />
+    <div class="h-full bg-theme transition-colors" :style="{ width }" />
   </div>
 </template>
 

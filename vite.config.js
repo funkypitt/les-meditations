@@ -3,7 +3,8 @@ import svg from 'vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import { tailwindColors } from './vite.plugins.js'
-import db from '#database/categories.js'
+import categories from '#database/categories.js'
+import shades from '#database/shades.js'
 
 export default {
 
@@ -17,7 +18,8 @@ export default {
     svg(),
     tailwindcss(),
     tailwindColors({
-      colors: db.map(c => c.color),
+      shades,
+      colors: categories.map(c => c.color),
       filename: 'src/tailwind-colors.css'
     }),
     VitePWA({

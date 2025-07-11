@@ -22,29 +22,20 @@
 
 @theme {
 
-  --color-blue-50: #eef9ff;
-  --color-blue-100: #d8f1ff;
-  --color-blue-200: #bae7ff;
-  --color-blue-300: #8bdaff;
-  --color-blue-400: #54c4ff;
-  --color-blue-500: #2da6ff;
-  --color-blue-600: #1687fa;
-  --color-blue-700: #0f70e8;
-  --color-blue-800: #1359ba;
-  --color-blue-900: #164d92;
-  --color-blue-950: #123059;
+  --color-theme-50: var(--color-blue-50);
+  --color-theme-100: var(--color-blue-100);
+  --color-theme-200: var(--color-blue-200);
+  --color-theme-300: var(--color-blue-300);
+  --color-theme-400: var(--color-blue-400);
+  --color-theme-500: var(--color-blue-500);
+  --color-theme-600: var(--color-blue-600);
+  --color-theme-700: var(--color-blue-700);
+  --color-theme-800: var(--color-blue-800);
+  --color-theme-900: var(--color-blue-900);
+  --color-theme-950: var(--color-blue-950);
 
-  --color-blue: var(--color-blue-600);
+  --color-theme: var(--color-theme-600);
   --color-gray: var(--color-slate-600);
-
-  --text-shadow-outline: -1px -1px 0 white,
-                          0   -1px 0 white,
-                          1px -1px 0 white,
-                          1px  0   0 white,
-                          1px  1px 0 white,
-                          0    1px 0 white,
-                         -1px  1px 0 white,
-                         -1px  0   0 white
   
 }
 
@@ -109,7 +100,7 @@
     @apply my-2;
   }
   .html a {
-    @apply text-blue hover:underline;
+    @apply text-theme hover:underline;
   }
   .html ol {
     @apply list-decimal ml-6 my-2;

@@ -15,12 +15,12 @@
 
     <!-- information -->
 
-    <div class="html mb-8 tile bg-blue-100 shadow-none">
+    <div class="html mb-8 tile bg-theme-100 shadow-none">
       <p class="font-medium">Pour une écoute sans interruption, je vous recommande fortement de procéder comme suit:</p>
       <ol>
         <li>Télécharger l'enregistrement choisi à l'aide du bouton à droite de celui-ci.</li>
         <li>Mettre votre appareil en mode avion</li>
-        <li>Appuyer sur play! En cas de problème, les enregistrements sont aussi disponibles à l'écoute et au téléchargement au format mp3 <a class="text-blue hover:underline" target="_blank" href="https://www.enpleineconscience.ch/meditations-guidees-mp3/">sur mon site</a>.</li>
+        <li>Appuyer sur play! En cas de problème, les enregistrements sont aussi disponibles à l'écoute et au téléchargement au format mp3 <a class="text-theme-700 font-normal hover:underline" target="_blank" href="https://www.enpleineconscience.ch/meditations-guidees-mp3/">sur mon site</a>.</li>
       </ol>
     </div>
 
